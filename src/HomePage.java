@@ -8,7 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class HomePage extends JFrame {
+	public static ConnectionHandler connection_to_database;
+	static JFrame home_page;
 	public HomePage() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 
@@ -36,6 +39,7 @@ public class HomePage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				NewClientProfile go_to_new_client_profile = new NewClientProfile();
 				go_to_new_client_profile.setVisible(true);
+				home_page.dispose();
 			}
 		});
 		create_a_new_client_visit.addActionListener(new ActionListener() {
@@ -43,6 +47,7 @@ public class HomePage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				SelectClientForNewVisit go_to_new_client_visit = new SelectClientForNewVisit();
 				go_to_new_client_visit.setVisible(true);
+				home_page.dispose();
 			}
 		});
 		view_list_of_clients.addActionListener(new ActionListener() {
@@ -50,6 +55,7 @@ public class HomePage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ViewListOfClients go_to_view_list_of_clients = new ViewListOfClients();
 				go_to_view_list_of_clients.setVisible(true);
+				home_page.dispose();
 			}
 		});
 		view_list_of_recent_clients.addActionListener(new ActionListener() {
@@ -57,6 +63,7 @@ public class HomePage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ViewListOfRecentClients go_to_view_list_of_recent_cleints = new ViewListOfRecentClients();
 				go_to_view_list_of_recent_cleints.setVisible(true);
+				home_page.dispose();
 			}
 		});
 
@@ -67,8 +74,14 @@ public class HomePage extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		JFrame home_page = new HomePage();
+		home_page = new HomePage();
 		home_page.setVisible(true);
-		// main_frame.setIconImage(new ImageIcon(imgURL).getImage());
+		connection_to_database = new ConnectionHandler();
+		try {
+			connection_to_database.connect();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
