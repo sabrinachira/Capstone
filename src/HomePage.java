@@ -45,8 +45,8 @@ public class HomePage extends JFrame {
 		create_a_new_client_visit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SelectClientForNewVisit go_to_new_client_visit = new SelectClientForNewVisit();
-				go_to_new_client_visit.setVisible(true);
+				SelectClientForNewVisit select_a_client = new SelectClientForNewVisit();
+				select_a_client.setVisible(true);
 				home_page.dispose();
 			}
 		});
@@ -68,7 +68,7 @@ public class HomePage extends JFrame {
 		});
 
 		pack();
-		setSize(800, 800);
+		setSize(1200, 1200);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

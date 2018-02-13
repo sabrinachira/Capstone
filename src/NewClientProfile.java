@@ -14,8 +14,6 @@ import javax.swing.JTextField;
 public class NewClientProfile extends JFrame {
 	public static ConnectionHandler connection_to_database;
 	static JFrame NewClientProfile;
-	static Connection connection;
-	static Statement statement;
 
 	public NewClientProfile() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
@@ -53,14 +51,13 @@ public class NewClientProfile extends JFrame {
 		panel_new_client_profile.add(save_profile);
 		panel_new_client_profile.add(cancel);
 
-		add(panel_new_client_profile);
 
 		String first_name = first_name_input.getText();
 		String last_name = last_name_input.getText();
-		String phone_number= phone_number_input.getText();;
-		String address =  address_input.getText();;
-		String birthday =  birthday_input.getText();;
-		String email = email_input.getText();;
+		String phone_number= phone_number_input.getText();
+		String address =  address_input.getText();
+		String birthday =  birthday_input.getText();
+		String email = email_input.getText();
 		
 		
 		
@@ -106,6 +103,7 @@ public class NewClientProfile extends JFrame {
 			}
 		});
 
+		add(panel_new_client_profile);
 		pack();
 		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,9 +114,9 @@ public class NewClientProfile extends JFrame {
 		NewClientProfile = new NewClientProfile();
 		NewClientProfile.setVisible(true);
 		connection_to_database = new ConnectionHandler();
-		connection = null;
+		ConnectionHandler.connection = null;
 		try {
-			statement = connection.createStatement();
+			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
 			connection_to_database.connect();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

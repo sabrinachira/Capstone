@@ -9,8 +9,6 @@ import javax.swing.JMenuBar;
 public class ViewListOfRecentClients extends JFrame {
 	static JFrame ViewListOfRecentClients;
 	public static ConnectionHandler connection_to_database;
-	static Connection connection;
-	static Statement statement;
 
 	public ViewListOfRecentClients() {
 		JMenuBar menu_bar = new JMenuBar();
@@ -31,10 +29,10 @@ public class ViewListOfRecentClients extends JFrame {
 		ViewListOfRecentClients = new ViewListOfRecentClients();
 		ViewListOfRecentClients.setVisible(true);
 		connection_to_database = new ConnectionHandler();
-		connection = null;
+		ConnectionHandler.connection = null;
 
 		try {
-			statement = connection.createStatement();
+			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
 			connection_to_database.connect();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

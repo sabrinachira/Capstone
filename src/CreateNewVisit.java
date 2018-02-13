@@ -10,8 +10,6 @@ import javax.swing.JTextField;
 public class CreateNewVisit extends JFrame {
 	static JFrame CreateNewVisit;
 	public static ConnectionHandler connection_to_database;
-	static Connection connection;
-	static Statement statement;
 	
 	public CreateNewVisit() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
@@ -61,9 +59,9 @@ public class CreateNewVisit extends JFrame {
 		CreateNewVisit = new CreateNewVisit();
 		CreateNewVisit.setVisible(true);
 		connection_to_database = new ConnectionHandler();
-		connection = null;
+		ConnectionHandler.connection = null;
 		try {
-			statement = connection.createStatement();
+			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
 			connection_to_database.connect();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

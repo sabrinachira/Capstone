@@ -14,8 +14,6 @@ import javax.swing.table.DefaultTableModel;
 public class ViewListOfClients extends JFrame {
 	public static ConnectionHandler connection_to_database;
 	static JFrame ViewListOfClients;
-	static Connection connection;
-	static Statement statement;
 
 	public ViewListOfClients() {
 		JMenuBar menu_bar = new JMenuBar();
@@ -29,12 +27,12 @@ public class ViewListOfClients extends JFrame {
 		try {
 			DefaultTableModel model = new DefaultTableModel(new String[] { "Last Name", "First Name", "Stylist" },
 					5000);
-			ResultSet resultSet;
-			resultSet = statement.executeQuery("SELECT * FROM clients");
+
+			ResultSet resultSet = ConnectionHandler.statement.executeQuery("SELECT Last, First, Stylist FROM clients");
 
 			while (resultSet.next()) {
-				String last_name = resultSet.getString("Last Name");
-				String first_name = resultSet.getString("First Name");
+				String last_name = resultSet.getString("Last");
+				String first_name = resultSet.getString("First");
 				// String last_visit = resultSet.getString("dueDate");
 				String stylist = resultSet.getString("stylist");
 				model.addRow(new Object[] { last_name, first_name, stylist });
@@ -59,9 +57,9 @@ public class ViewListOfClients extends JFrame {
 		ViewListOfClients = new ViewListOfClients();
 		ViewListOfClients.setVisible(true);
 		connection_to_database = new ConnectionHandler();
-		connection = null;
+		ConnectionHandler.connection = null;
 		try {
-			statement = connection.createStatement();
+			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
 			connection_to_database.connect();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
