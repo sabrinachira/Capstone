@@ -18,9 +18,6 @@ public class SelectClientForNewVisit extends JFrame {
 
 		JPanel panel_select_client_for_new_visit = new JPanel();
 
-		
-		
-		
 		JMenuBar menu_bar = new JMenuBar();
 		JMenu new_client = new JMenu("New Client");
 		JTable table = new JTable();
@@ -32,6 +29,7 @@ public class SelectClientForNewVisit extends JFrame {
 		try {
 			DefaultTableModel model = new DefaultTableModel(new String[] { "Last Name", "First Name", "Stylist" },
 					5000);
+			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
 			ResultSet resultSet = ConnectionHandler.statement.executeQuery("SELECT Last, First, Stylist FROM clients");
 
 			while (resultSet.next()) {
@@ -48,11 +46,7 @@ public class SelectClientForNewVisit extends JFrame {
 			System.err.println(e.getMessage());
 
 		}
-		
-		
-		
-		
-		
+
 		// ************************************************************************************//
 		// allow user to select user from list of clients
 		// the click saves the database reference and carries it to the
@@ -71,17 +65,7 @@ public class SelectClientForNewVisit extends JFrame {
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		finally {
-//			try {
-//				ConnectionHandler.end_connection();
-//			} catch (ClassNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
 	}
-
 }

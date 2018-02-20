@@ -58,17 +58,7 @@ public class CreateNewVisit extends JFrame {
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-//		finally {
-//			try {
-//				ConnectionHandler.end_connection();
-//			} catch (ClassNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
 	}
-
 }

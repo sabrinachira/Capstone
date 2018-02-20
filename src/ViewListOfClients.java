@@ -7,6 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,16 +24,13 @@ public class ViewListOfClients extends JFrame {
 		setJMenuBar(menu_bar);
 		JPanel list_of_clients = new JPanel();
 		ConnectionHandler.statement = null;
-
 		// display the table. turn a database into a Jtable
 		try {
-
 			DefaultTableModel model = new DefaultTableModel(new String[] { "Last Name", "First Name", "Stylist" }, 0);
 			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
 			ResultSet rs = ConnectionHandler.statement.executeQuery("SELECT last, first, stylist FROM clients");
 
 			while (rs.next()) {
-
 				String last_name = rs.getString("Last");
 				String first_name = rs.getString("First");
 				// String last_visit = rs.getString("dueDate");
@@ -45,7 +43,6 @@ public class ViewListOfClients extends JFrame {
 		}
 		add(list_of_clients);
 		list_of_clients.add(new JScrollPane(table), BorderLayout.CENTER);
-		// list_of_clients.add(table);
 		pack();
 		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

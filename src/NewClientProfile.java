@@ -1,14 +1,13 @@
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 
 @SuppressWarnings("serial")
 public class NewClientProfile extends JFrame {
@@ -23,6 +22,14 @@ public class NewClientProfile extends JFrame {
 		database_size_before_add = 0;
 		database_size_after_add = 0;
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
+		Box vertical_box = Box.createVerticalBox();
+		Box first_horizontal_box = Box.createHorizontalBox();
+		Box last_horizontal_box = Box.createHorizontalBox();
+		Box phone_horizontal_box = Box.createHorizontalBox();
+		Box address_horizontal_box = Box.createHorizontalBox();
+		Box birthday_horizontal_box = Box.createHorizontalBox();
+		Box email_horizontal_box = Box.createHorizontalBox();
+		Box buttons_horizontal_box = Box.createHorizontalBox();
 
 		JPanel panel_new_client_profile = new JPanel();
 
@@ -41,25 +48,30 @@ public class NewClientProfile extends JFrame {
 
 		JButton save_profile = new JButton("SAVE");
 		JButton cancel = new JButton("CANCEL");
-		
-		SpringLayout spring_layout = new SpringLayout();
-		panel_new_client_profile.setLayout(spring_layout);
-		
-		panel_new_client_profile.add(first_name_prompt);
-		panel_new_client_profile.add(first_name_input);
-		panel_new_client_profile.add(last_name_prompt);
-		panel_new_client_profile.add(last_name_input);
-		panel_new_client_profile.add(phone_number_prompt);
-		panel_new_client_profile.add(phone_number_input);
-		panel_new_client_profile.add(address_prompt);
-		panel_new_client_profile.add(address_input);
-		panel_new_client_profile.add(birthday_prompt);
-		panel_new_client_profile.add(birthday_input);
-		panel_new_client_profile.add(email_prompt);
-		panel_new_client_profile.add(email_input);
 
-		panel_new_client_profile.add(save_profile);
-		panel_new_client_profile.add(cancel);
+		first_horizontal_box.add(first_name_prompt);
+		first_horizontal_box.add(first_name_input);
+		last_horizontal_box.add(last_name_prompt);
+		last_horizontal_box.add(last_name_input);
+		phone_horizontal_box.add(phone_number_prompt);
+		phone_horizontal_box.add(phone_number_input);
+		address_horizontal_box.add(address_prompt);
+		address_horizontal_box.add(address_input);
+		birthday_horizontal_box.add(birthday_prompt);
+		birthday_horizontal_box.add(birthday_input);
+		email_horizontal_box.add(email_prompt);
+		email_horizontal_box.add(email_input);
+		buttons_horizontal_box.add(save_profile);
+		buttons_horizontal_box.add(cancel);
+
+		vertical_box.add(first_horizontal_box);
+		vertical_box.add(last_horizontal_box);
+		vertical_box.add(phone_horizontal_box);
+		vertical_box.add(address_horizontal_box);
+		vertical_box.add(birthday_horizontal_box);
+		vertical_box.add(email_horizontal_box);
+		vertical_box.add(buttons_horizontal_box);
+		panel_new_client_profile.add(vertical_box);
 
 		save_profile.addActionListener(new ActionListener() {
 			@Override
@@ -70,10 +82,6 @@ public class NewClientProfile extends JFrame {
 
 				if (confirm == JOptionPane.YES_OPTION) {
 					try {
-						ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
-						database_size_before_add = ConnectionHandler.statement
-								.executeUpdate("SELECT Count(*) FROM clients");
-
 						String first_name = first_name_input.getText();
 						String last_name = last_name_input.getText();
 						String phone_number = phone_number_input.getText();
@@ -82,14 +90,6 @@ public class NewClientProfile extends JFrame {
 						String email = email_input.getText();
 						ConnectionHandler.add_client_profile_to_database(first_name, last_name, phone_number, address,
 								birthday, email);
-						database_size_after_add = ConnectionHandler.statement
-								.executeUpdate("SELECT count(*) FROM clients");
-						System.out.println("database_size_before_add: " + database_size_before_add);
-						System.out.println("database_size_after_add: " + database_size_after_add);
-						if ((database_size_before_add + 1) == database_size_after_add) {
-							System.out.println("correct size");
-						}
-
 						which_method_to_go_into = 1;
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -137,7 +137,6 @@ public class NewClientProfile extends JFrame {
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
