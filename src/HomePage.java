@@ -76,12 +76,27 @@ public class HomePage extends JFrame {
 	public static void main(String[] args) {
 		home_page = new HomePage();
 		home_page.setVisible(true);
-		connection_to_database = new ConnectionHandler();
+		//connection_to_database = new ConnectionHandler();
+		//ConnectionHandler.connection = null;
 		try {
-			connection_to_database.connect();
-		} catch (ClassNotFoundException e) {
+			ConnectionHandler.connect();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//finally {
+//			try {
+//				ConnectionHandler.end_connection();
+//			} catch (ClassNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		try {
+//			connection_to_database.connect();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

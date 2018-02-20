@@ -1,6 +1,3 @@
-import java.sql.Connection;
-import java.sql.Statement;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -28,16 +25,19 @@ public class ViewListOfRecentClients extends JFrame {
 	public static void main(String[] args) {
 		ViewListOfRecentClients = new ViewListOfRecentClients();
 		ViewListOfRecentClients.setVisible(true);
-		connection_to_database = new ConnectionHandler();
-		ConnectionHandler.connection = null;
-
 		try {
-			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
-			connection_to_database.connect();
+			ConnectionHandler.connect();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+//		finally {
+//			try {
+//				ConnectionHandler.end_connection();
+//			} catch (ClassNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	}
-
 }

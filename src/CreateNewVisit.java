@@ -1,6 +1,3 @@
-import java.sql.Connection;
-import java.sql.Statement;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,7 +7,7 @@ import javax.swing.JTextField;
 public class CreateNewVisit extends JFrame {
 	static JFrame CreateNewVisit;
 	public static ConnectionHandler connection_to_database;
-	
+
 	public CreateNewVisit() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 
@@ -30,8 +27,8 @@ public class CreateNewVisit extends JFrame {
 		JTextField notes_and_preferences_input = new JTextField(20);
 		JLabel other_prompt = new JLabel("Other: ");
 		JTextField other_input = new JTextField(20);
-		
-		//display user profile at the top.
+
+		// display user profile at the top.
 
 		panel_new_visit.add(stylist_prompt);
 		panel_new_visit.add(stylist_input);
@@ -58,15 +55,20 @@ public class CreateNewVisit extends JFrame {
 	public static void main(String[] args) {
 		CreateNewVisit = new CreateNewVisit();
 		CreateNewVisit.setVisible(true);
-		connection_to_database = new ConnectionHandler();
-		ConnectionHandler.connection = null;
 		try {
-			ConnectionHandler.statement = ConnectionHandler.connection.createStatement();
-			connection_to_database.connect();
+			ConnectionHandler.connect();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
+//		finally {
+//			try {
+//				ConnectionHandler.end_connection();
+//			} catch (ClassNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 }

@@ -17,7 +17,7 @@ public class ConnectionHandler {
 	/*
 	 * connects the database to the program
 	 */
-	public void connect() throws ClassNotFoundException {
+	public static void connect() throws ClassNotFoundException {
 		// load the sqlite-JDBC driver using the current class loader
 		connection = null;
 
@@ -36,7 +36,7 @@ public class ConnectionHandler {
 	 * end the connection when the user selects the RED X at the top right of
 	 * the screen (the close button)
 	 */
-	public void end_connection() throws ClassNotFoundException {
+	public static void end_connection() throws ClassNotFoundException {
 		try {
 			if (connection != null) {
 				connection.close();
@@ -59,18 +59,14 @@ public class ConnectionHandler {
 
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS clients ( First text ," + " Last text," + "Phone text,"
 					+ " Address text," + " Birthday text," + "Email text," + "Stylist text," + "Hairstyle text,"
-					+ "Haircut text," + "Products text," + "Formula text," + "(Notes and Preferences) text,"
-					+ "Other text)");
+					+ "Haircut text," + "Products text," + "Formula text," + "Notes text," + "Other text)");
 
-			statement.executeUpdate("INSERT INTO clients"
-					+ "(first_name, last_name, phone_number, address, birthday, email, stylist, hairstyle, haircut, products, formula, notes_and_preferences, other) VALUES"
-					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-			statement.executeUpdate("UPDATE clients SET First='" + first_name + "', Last='" + last_name + "', Phone='"
-					+ phone_number + "', Address='" + address + "', Birthday='" + birthday + "', Email Name='" + email
-					+ "', Stylist='" + stylist + "', Hairstyle='" + hairstyle + "', Haircut='" + haircut
-					+ "', Products='" + products + "', Formula='" + formula + "', Notes and Preferences='"
-					+ notes_and_preferences + "', Other ='" + other + "')");
+			statement.executeUpdate(
+					"INSERT INTO clients (First,Last,Phone,Address,Birthday,Email, Stylist, Hairstyle, Haircut, Products, Formula, Notes, Other) "
+							+ "VALUES ('" + first_name + "','" + last_name + "','" + phone_number + "','" + address
+							+ "','" + birthday + "','" + email + "','" + stylist + "','" + hairstyle + "','" + haircut
+							+ "','" + products + "','" + formula + "','" + notes_and_preferences + "','" + other
+							+ "')");
 
 			return true;
 
@@ -90,21 +86,44 @@ public class ConnectionHandler {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			System.out.println("1");
+			// statement.executeUpdate("DROP TABLE IF EXISTS clients");
+			// System.out.println("2");
 
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS clients ( First text," + " Last text," + "Phone text,"
-					+ " Address text," + " Birthday text," + "Email text)");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS clients ( First text ," + " Last text," + "Phone text,"
+					+ " Address text," + " Birthday text," + "Email text," + "Stylist text," + "Hairstyle text,"
+					+ "Haircut text," + "Products text," + "Formula text," + "Notes text," + "Other text)");
+
 			System.out.println("2");
 
-			statement.executeUpdate(
-					"INSERT INTO clients(First, Last, Phone, Address, Birthday, Email) VALUES (" + first_name + ","
-							+ last_name + "','" + phone_number + "','" + address + "','" + birthday + "','" + email + ")");
+			statement.executeUpdate("INSERT INTO clients (First,Last,Phone,Address,Birthday,Email) " + "VALUES ('"
+					+ first_name + "','" + last_name + "','" + phone_number + "','" + address + "','" + birthday + "','"
+					+ email + "')");
 
 			System.out.println("3");
 
-			statement.executeUpdate(
-					"UPDATE clients SET First='" + first_name + "', Last='" + last_name + "', Phone='" + phone_number
-							+ "', Address='" + address + "', Birthday='" + birthday + "', Email Name='" + email + "')");
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT * FROM clients");
+			System.out.println("4");
 
+			while (rs.next()) {
+				String first = rs.getString("First");
+				String second = rs.getString("Last");
+				String third = rs.getString("Phone");
+				String fourth = rs.getString("Address");
+				String fifth = rs.getString("Birthday");
+				String sixth = rs.getString("Email");
+				System.out.println("5");
+
+				System.out.println("first = " + first);
+				System.out.println("last = " + second);
+				System.out.println("phone = " + third);
+				System.out.println("address = " + fourth);
+				System.out.println("birthday = " + fifth);
+				System.out.println("email = " + sixth);
+				System.out.println("6");
+
+			}
+			System.out.println("7");
 			return true;
 
 		} catch (SQLException e) {
@@ -120,32 +139,34 @@ public class ConnectionHandler {
 	 * id(row)
 	 */
 	public void delete_from_database() throws ClassNotFoundException {
-		try {
-			statement = connection.createStatement();
-			statement.setQueryTimeout(30); // set timeout to 30 sec.
+		// try {
+		// statement = connection.createStatement();
+		// statement.setQueryTimeout(30);
+		// set timeout to 30 sec.
 
-			// statement.executeUpdate("DROP TABLE IF EXISTS person");
-			// statement.executeUpdate("CREATE TABLE person (id INTEGER, name
-			// STRING)");
-			//
-			// int ids [] = {1,2,3,4,5};
-			// String names [] = {"Peter","Pallar","William","Paul","James
-			// Bond"};
-			//
-			// for(int i=0;i<ids.length;i++){
-			// statement.executeUpdate("INSERT INTO person values(' "+ids[i]+"',
-			// '"+names[i]+"')");
-			// }
+		// statement.executeUpdate("DROP TABLE IF EXISTS person");
+		// statement.executeUpdate("CREATE TABLE person (id INTEGER, name
+		// STRING)");
+		//
+		// int ids [] = {1,2,3,4,5};
+		// String names [] = {"Peter","Pallar","William","Paul","James
+		// Bond"};
+		//
+		// for(int i=0;i<ids.length;i++){
+		// statement.executeUpdate("INSERT INTO person values(' "+ids[i]+"',
+		// '"+names[i]+"')");
+		// }
 
-			// statement.executeUpdate("UPDATE person SET name='Peter' WHERE
-			// id='1'");
-			// statement.executeUpdate("DELETE FROM person WHERE id='1'");
+		// statement.executeUpdate("UPDATE person SET name='Peter' WHERE
+		// id='1'");
+		// statement.executeUpdate("DELETE FROM person WHERE id='1'");
+		//
+		// ResultSet result_set = statement.executeQuery("SELECT * from
+		// clients");
 
-			ResultSet resultSet = statement.executeQuery("SELECT * from person");
-
-		} catch (SQLException e) {
-			System.out.println("couldn't delete");
-			System.err.println(e.getMessage());
-		}
+		// } catch (SQLException e) {
+		// System.out.println("couldn't delete");
+		// System.err.println(e.getMessage());
+		// }
 	}
 }
