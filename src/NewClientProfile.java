@@ -13,14 +13,8 @@ import javax.swing.JTextField;
 public class NewClientProfile extends JFrame {
 	public static ConnectionHandler connection_to_database;
 	static JFrame NewClientProfile;
-	int database_size_before_add;
-	int database_size_after_add;
-	static int which_method_to_go_into;
 
 	public NewClientProfile() {
-		which_method_to_go_into = 0;
-		database_size_before_add = 0;
-		database_size_after_add = 0;
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 		Box vertical_box = Box.createVerticalBox();
 		Box first_horizontal_box = Box.createHorizontalBox();
@@ -90,12 +84,13 @@ public class NewClientProfile extends JFrame {
 						String email = email_input.getText();
 						ConnectionHandler.add_client_profile_to_database(first_name, last_name, phone_number, address,
 								birthday, email);
-						which_method_to_go_into = 1;
+						//CLOSE CURRENT NEW PROFILE FRAME
+						JFrame ViewListOfClients = new ViewListOfClients();
+						ViewListOfClients.setVisible(true);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 				} else {
-					which_method_to_go_into = 1;
 				}
 			}
 		});
@@ -106,11 +101,11 @@ public class NewClientProfile extends JFrame {
 				int confirm = JOptionPane.showConfirmDialog(null,
 						"Are you sure you want to cancel the creation of a new client profile?", "Cancel?",
 						JOptionPane.YES_NO_OPTION);
-
 				if (confirm == JOptionPane.YES_OPTION) {
-					which_method_to_go_into = 1;
+					//CLOSE CURRENT NEW PROFILE FRAME
+					JFrame HomePage = new HomePage();
+					HomePage.setVisible(true);
 				} else {
-					setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 				}
 			}
 		});
@@ -119,21 +114,13 @@ public class NewClientProfile extends JFrame {
 		pack();
 		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-	}
 
-	public static void dispose_current_open_new() {
-		NewClientProfile.dispose();
-		HomePage return_to_home_page = new HomePage();
-		return_to_home_page.setVisible(true);
+		setLocationRelativeTo(null);
 	}
 
 	public static void main(String[] args) {
 		NewClientProfile = new NewClientProfile();
 		NewClientProfile.setVisible(true);
-		if (which_method_to_go_into == 1) {
-			dispose_current_open_new();
-		}
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {

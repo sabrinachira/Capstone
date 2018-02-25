@@ -8,6 +8,8 @@ public class ViewListOfRecentClients extends JFrame {
 	public static ConnectionHandler connection_to_database;
 
 	public ViewListOfRecentClients() {
+		setTitle("Hair with a Flair. Your Client-Based Management System.");
+
 		JMenuBar menu_bar = new JMenuBar();
 		JMenu new_client = new JMenu("New Client");
 

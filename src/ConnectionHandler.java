@@ -135,6 +135,20 @@ public class ConnectionHandler {
 	}
 
 	/*
+	 * deletes the whole table of clients
+	 */
+	public static void delete_whole_table() throws ClassNotFoundException {
+		try {
+			statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			statement.executeUpdate("DELETE FROM clients");
+		} catch (SQLException e) {
+			System.out.println("couldn't delete list");
+			System.err.println(e.getMessage());
+		}
+	}
+
+	/*
 	 * deletes the information from the database when the user selects an
 	 * id(row)
 	 */

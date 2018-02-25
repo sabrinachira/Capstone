@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class HomePage extends JFrame {
+	static HomePage home_page;
 	public static ConnectionHandler connection_to_database;
-	static JFrame home_page;
 	public HomePage() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 
@@ -68,7 +68,7 @@ public class HomePage extends JFrame {
 		});
 
 		pack();
-		setSize(1200, 1200);
+		setSize(900, 900);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
@@ -84,19 +84,5 @@ public class HomePage extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//finally {
-//			try {
-//				ConnectionHandler.end_connection();
-//			} catch (ClassNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		try {
-//			connection_to_database.connect();
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 }
