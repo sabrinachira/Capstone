@@ -9,10 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class HomePage extends JFrame {
-	static HomePage home_page;
-	public static ConnectionHandler connection_to_database;
-	public HomePage() {
+public class Home_Page extends JFrame {
+	static JFrame home_page;
+	
+	public Home_Page() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 
 		JPanel panel_home_page = new JPanel();
@@ -37,33 +37,29 @@ public class HomePage extends JFrame {
 		create_a_new_client_profile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NewClientProfile go_to_new_client_profile = new NewClientProfile();
+				New_Client_Profile go_to_new_client_profile = new New_Client_Profile();
 				go_to_new_client_profile.setVisible(true);
-				home_page.dispose();
 			}
 		});
 		create_a_new_client_visit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SelectClientForNewVisit select_a_client = new SelectClientForNewVisit();
+				Select_Client_For_New_Visit select_a_client = new Select_Client_For_New_Visit();
 				select_a_client.setVisible(true);
-				home_page.dispose();
 			}
 		});
 		view_list_of_clients.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ViewListOfClients go_to_view_list_of_clients = new ViewListOfClients();
+				View_List_Of_Clients go_to_view_list_of_clients = new View_List_Of_Clients();
 				go_to_view_list_of_clients.setVisible(true);
-				home_page.dispose();
 			}
 		});
 		view_list_of_recent_clients.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ViewListOfRecentClients go_to_view_list_of_recent_cleints = new ViewListOfRecentClients();
+				View_List_Of_Recent_Clients go_to_view_list_of_recent_cleints = new View_List_Of_Recent_Clients();
 				go_to_view_list_of_recent_cleints.setVisible(true);
-				home_page.dispose();
 			}
 		});
 
@@ -74,7 +70,7 @@ public class HomePage extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		home_page = new HomePage();
+		home_page = new Home_Page();
 		home_page.setVisible(true);
 		//connection_to_database = new ConnectionHandler();
 		//ConnectionHandler.connection = null;

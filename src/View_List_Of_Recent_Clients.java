@@ -15,14 +15,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
-public class ViewListOfClients extends JFrame {
-	public static ConnectionHandler connection_to_database;
-	static JFrame ViewListOfClients;
+public class View_List_Of_Recent_Clients extends JFrame {
+	View_List_Of_Recent_Clients View_List_Of_Recent_Clients;
 	Statement statement = null;
 	DefaultTableModel model = null;
 	JTable table = null;
 
-	public ViewListOfClients() {
+	public View_List_Of_Recent_Clients() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 		JMenuBar menu_bar = new JMenuBar();
 		JMenu Options = new JMenu("Options");
@@ -49,7 +48,6 @@ public class ViewListOfClients extends JFrame {
 				try {
 					ConnectionHandler.delete_whole_table();
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				draw_Table();
@@ -59,8 +57,9 @@ public class ViewListOfClients extends JFrame {
 		add_new_client.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame NewClientProfile = new NewClientProfile();
+				JFrame NewClientProfile = new New_Client_Profile();
 				NewClientProfile.setVisible(true);
+				View_List_Of_Recent_Clients.dispose();
 			}
 		});
 
@@ -76,12 +75,11 @@ public class ViewListOfClients extends JFrame {
 		try {
 			model = new DefaultTableModel(new String[] { "Last Name", "First Name", "Stylist" }, 0);
 			statement = ConnectionHandler.connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT last, first, stylist FROM clients ORDER BY last, first;");
+			ResultSet rs = statement.executeQuery("SELECT last, first, stylist, FROM clients ORDER BY date;");
 
 			while (rs.next()) {
 				String last_name = rs.getString("Last");
 				String first_name = rs.getString("First");
-				// String last_visit = rs.getString("dueDate");
 				String stylist = rs.getString("Stylist");
 				model.addRow(new Object[] { last_name, first_name, stylist });
 			}
@@ -91,9 +89,9 @@ public class ViewListOfClients extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		ViewListOfClients = new ViewListOfClients();
-		ViewListOfClients.setVisible(true);
+	public void main(String[] args) {
+		View_List_Of_Recent_Clients = new View_List_Of_Recent_Clients();
+		View_List_Of_Recent_Clients.setVisible(true);
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {

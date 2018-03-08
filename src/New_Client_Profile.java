@@ -10,20 +10,19 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class NewClientProfile extends JFrame {
-	public static ConnectionHandler connection_to_database;
-	static JFrame NewClientProfile;
+public class New_Client_Profile extends JFrame {
+	New_Client_Profile New_Client_Profile;
 
-	public NewClientProfile() {
+	public New_Client_Profile() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 		Box vertical_box = Box.createVerticalBox();
 		Box first_horizontal_box = Box.createHorizontalBox();
 		Box last_horizontal_box = Box.createHorizontalBox();
 		Box phone_horizontal_box = Box.createHorizontalBox();
 		Box address_horizontal_box = Box.createHorizontalBox();
-		Box birthday_horizontal_box = Box.createHorizontalBox();
 		Box email_horizontal_box = Box.createHorizontalBox();
 		Box buttons_horizontal_box = Box.createHorizontalBox();
+		Box stylist_horizontal_box = Box.createHorizontalBox();
 
 		JPanel panel_new_client_profile = new JPanel();
 
@@ -35,10 +34,10 @@ public class NewClientProfile extends JFrame {
 		JTextField phone_number_input = new JTextField(20);
 		JLabel address_prompt = new JLabel("Address: ");
 		JTextField address_input = new JTextField(20);
-		JLabel birthday_prompt = new JLabel("Birthday: ");
-		JTextField birthday_input = new JTextField(20);
 		JLabel email_prompt = new JLabel("Email: ");
 		JTextField email_input = new JTextField(20);
+		JLabel stylist_prompt = new JLabel("Sylist: ");
+		JTextField stylist_input = new JTextField(20);
 
 		JButton save_profile = new JButton("SAVE");
 		JButton cancel = new JButton("CANCEL");
@@ -51,18 +50,18 @@ public class NewClientProfile extends JFrame {
 		phone_horizontal_box.add(phone_number_input);
 		address_horizontal_box.add(address_prompt);
 		address_horizontal_box.add(address_input);
-		birthday_horizontal_box.add(birthday_prompt);
-		birthday_horizontal_box.add(birthday_input);
 		email_horizontal_box.add(email_prompt);
 		email_horizontal_box.add(email_input);
+		stylist_horizontal_box.add(stylist_prompt);
+		stylist_horizontal_box.add(stylist_input);
 		buttons_horizontal_box.add(save_profile);
 		buttons_horizontal_box.add(cancel);
 
 		vertical_box.add(first_horizontal_box);
 		vertical_box.add(last_horizontal_box);
+		vertical_box.add(stylist_horizontal_box);
 		vertical_box.add(phone_horizontal_box);
 		vertical_box.add(address_horizontal_box);
-		vertical_box.add(birthday_horizontal_box);
 		vertical_box.add(email_horizontal_box);
 		vertical_box.add(buttons_horizontal_box);
 		panel_new_client_profile.add(vertical_box);
@@ -78,15 +77,16 @@ public class NewClientProfile extends JFrame {
 					try {
 						String first_name = first_name_input.getText();
 						String last_name = last_name_input.getText();
+						String stylist = stylist_input.getText();
 						String phone_number = phone_number_input.getText();
 						String address = address_input.getText();
-						String birthday = birthday_input.getText();
 						String email = email_input.getText();
-						ConnectionHandler.add_client_profile_to_database(first_name, last_name, phone_number, address,
-								birthday, email);
-						//CLOSE CURRENT NEW PROFILE FRAME
-						JFrame ViewListOfClients = new ViewListOfClients();
+						ConnectionHandler.add_client_profile_to_database(first_name, last_name, stylist, phone_number,
+								address, email);
+
+						View_List_Of_Clients ViewListOfClients = new View_List_Of_Clients();
 						ViewListOfClients.setVisible(true);
+						//New_Client_Profile.dispose();
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -102,9 +102,9 @@ public class NewClientProfile extends JFrame {
 						"Are you sure you want to cancel the creation of a new client profile?", "Cancel?",
 						JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
-					//CLOSE CURRENT NEW PROFILE FRAME
-					JFrame HomePage = new HomePage();
-					HomePage.setVisible(true);
+					Home_Page home_page = new Home_Page();
+					//home_page.setVisible(true);
+					New_Client_Profile.dispose();
 				} else {
 				}
 			}
@@ -113,14 +113,13 @@ public class NewClientProfile extends JFrame {
 		add(panel_new_client_profile);
 		pack();
 		setSize(800, 800);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 
-	public static void main(String[] args) {
-		NewClientProfile = new NewClientProfile();
-		NewClientProfile.setVisible(true);
+	public void main(String[] args) {
+		New_Client_Profile = new New_Client_Profile();
+		New_Client_Profile.setVisible(true);
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {

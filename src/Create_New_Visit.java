@@ -4,11 +4,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class CreateNewVisit extends JFrame {
-	static JFrame CreateNewVisit;
-	public static ConnectionHandler connection_to_database;
+public class Create_New_Visit extends JFrame {
+	Create_New_Visit Create_New_Visit;
 
-	public CreateNewVisit() {
+	public Create_New_Visit() {
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 
 		JPanel panel_new_visit = new JPanel();
@@ -52,9 +51,9 @@ public class CreateNewVisit extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	public static void main(String[] args) {
-		CreateNewVisit = new CreateNewVisit();
-		CreateNewVisit.setVisible(true);
+	public void main(String[] args) {
+		Create_New_Visit = new Create_New_Visit();
+		Create_New_Visit.setVisible(true);
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {
