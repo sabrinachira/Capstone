@@ -11,9 +11,13 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class New_Client_Profile extends JFrame {
-	New_Client_Profile New_Client_Profile;
-
 	public New_Client_Profile() {
+		try {
+			ConnectionHandler.connect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		setTitle("Hair with a Flair. Your Client-Based Management System.");
 		Box vertical_box = Box.createVerticalBox();
 		Box first_horizontal_box = Box.createHorizontalBox();
@@ -81,12 +85,21 @@ public class New_Client_Profile extends JFrame {
 						String phone_number = phone_number_input.getText();
 						String address = address_input.getText();
 						String email = email_input.getText();
-						ConnectionHandler.add_client_profile_to_database(first_name, last_name, stylist, phone_number,
-								address, email);
+						if (first_name.equals("") || last_name.equals("") || stylist.equals("")
+								|| phone_number.equals("") || address.equals("") || email.equals("")) {
+							JOptionPane.showMessageDialog(null, "All fields must be filled.", "Empty Field(s)",
+									JOptionPane.PLAIN_MESSAGE);
 
-						View_List_Of_Clients ViewListOfClients = new View_List_Of_Clients();
-						ViewListOfClients.setVisible(true);
-						//New_Client_Profile.dispose();
+						} else {
+							// verify that there isn't a person with that name
+							// already and address already
+							ConnectionHandler.add_client_profile_to_database(first_name, last_name, stylist,
+									phone_number, address, email);
+
+							Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
+							Home_Page.go_to_view_list_of_clients.setVisible(true);
+						}
+						// New_Client_Profile.dispose();
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -102,9 +115,7 @@ public class New_Client_Profile extends JFrame {
 						"Are you sure you want to cancel the creation of a new client profile?", "Cancel?",
 						JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
-					Home_Page home_page = new Home_Page();
-					//home_page.setVisible(true);
-					New_Client_Profile.dispose();
+					Home_Page.go_to_new_client_profile.dispose();
 				} else {
 				}
 			}
@@ -115,15 +126,5 @@ public class New_Client_Profile extends JFrame {
 		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
-	}
-
-	public void main(String[] args) {
-		New_Client_Profile = new New_Client_Profile();
-		New_Client_Profile.setVisible(true);
-		try {
-			ConnectionHandler.connect();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

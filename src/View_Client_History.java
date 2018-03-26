@@ -10,11 +10,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -23,22 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
-public class View_List_Of_Clients extends JFrame {
+public class View_Client_History extends JFrame {
 	Statement statement = null;
 	DefaultTableModel model = null;
 	JTable table = null;
 	Connection connection1 = null;
-	static String first_name;
-	static String last_name;
-	static String stylist_name;
-	static int id;
 
-	public View_List_Of_Clients() {
+	public View_Client_History() {
 		try {
 			ConnectionHandler.connect();
 		} catch (Exception e) {
@@ -63,7 +54,7 @@ public class View_List_Of_Clients extends JFrame {
 		JPanel list_of_clients = new JPanel();
 
 		try {
-			draw_Table();
+			draw_main_table();
 		} catch (ClassNotFoundException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -81,12 +72,12 @@ public class View_List_Of_Clients extends JFrame {
 					if (confirm2 == JOptionPane.YES_OPTION) {
 						try {
 							ConnectionHandler.delete_whole_table();
-							draw_Table();
+							draw_main_table();
 						} catch (ClassNotFoundException e1) {
 							e1.printStackTrace();
 						}
 						try {
-							draw_Table();
+							draw_main_table();
 						} catch (ClassNotFoundException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -95,7 +86,6 @@ public class View_List_Of_Clients extends JFrame {
 					}
 				} else {
 				}
-
 			}
 		});
 
@@ -118,7 +108,7 @@ public class View_List_Of_Clients extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	private void draw_Table() throws ClassNotFoundException {
+	private void draw_main_table() throws ClassNotFoundException {
 		Statement statement_draw_table = null;
 		try {
 			ConnectionHandler.create_table("clients");
@@ -137,32 +127,8 @@ public class View_List_Of_Clients extends JFrame {
 			table.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
-						int row = table.rowAtPoint(e.getPoint());
-						set_first_name(table.getValueAt(row, 2));
-						set_last_name(table.getValueAt(row, 1));
-						set_stylist_name(table.getValueAt(row, 3));
-						set_id(table.getValueAt(row, 0));
-
-						Object[] options = { "View Visit History", "Create a Visit" };
-
-						JPanel panel = new JPanel();
-						panel.add(new JLabel(
-								"Please selet if you would like to create a visit for this client or view the client's visit history."));
-						int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_OPTION,
-								JOptionPane.PLAIN_MESSAGE, null, options, null);
-						if (result == JOptionPane.YES_OPTION) {
-							Home_Page.client_history_frame = new Client_History();
-							Home_Page.client_history_frame.setVisible(true);
-						} else {
-							try {
-								Home_Page.go_to_new_client_visit = new Create_New_Visit();
-								Home_Page.go_to_new_client_visit.setVisible(true);
-							} catch (ClassNotFoundException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						}
-
+						Home_Page.client_history_frame = new Client_History();
+						Home_Page.client_history_frame.setVisible(true);
 					}
 				}
 			});
@@ -184,37 +150,5 @@ public class View_List_Of_Clients extends JFrame {
 		} catch (SQLException e) {
 			System.err.println("error: " + e.getMessage());
 		}
-	}
-
-	public void set_first_name(Object first) {
-		first_name = (String) first;
-	}
-
-	public static String get_first_name() {
-		return first_name;
-	}
-
-	public void set_last_name(Object last) {
-		last_name = (String) last;
-	}
-
-	public static String get_last_name() {
-		return last_name;
-	}
-
-	public void set_stylist_name(Object stylist) {
-		stylist_name = (String) stylist;
-	}
-
-	public static String get_stylist_name() {
-		return stylist_name;
-	}
-
-	public void set_id(Object id) {
-		this.id = (int) id;
-	}
-
-	public static int get_id() {
-		return id;
 	}
 }

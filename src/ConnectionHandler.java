@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -49,52 +50,94 @@ public class ConnectionHandler {
 	/*
 	 * adds the client info and new visit into the database
 	 */
-	public boolean add_visit_to_client_table(String stylist, String hairstyle, String haircut, String products,
-			String formula, String notes_and_preferences, String other) throws ClassNotFoundException {
+	public static void add_visit_to_client_table(String hairstyle, String haircut, String products, String formula,
+			String notes_and_preferences, String other) throws ClassNotFoundException {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS clients (id INT AUTO_INCREMENT primary key, First text NOT NULL , Last text NOT NULL, Stylist text NOT NULL, Phone text, Address text NOT NULL, Email text, Hairstyle text, Haircut text, Products text, Formula text, Notes text, Other text)");
+			int client_id = View_List_Of_Clients.get_id();
+			String table_name = "table" + client_id;
 
-			statement
-					.executeUpdate("INSERT INTO clients (Stylist, Hairstyle, Haircut, Products, Formula, Notes, Other) "
-							+ "VALUES ('" + stylist + "','" + hairstyle + "','" + haircut + "','" + products + "','"
-							+ formula + "','" + notes_and_preferences + "','" + other + "')");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + table_name
+					+ " (First TEXT NOT NULL , Last TEXT NOT NULL, Stylist TEXT NOT NULL, Phone TEXT, Address TEXT NOT NULL, Email TEXT, Hairstyle TEXT, Haircut TEXT, Products TEXT, Formula TEXT, Notes TEXT, Other TEXT)");
 
-			return true;
+			statement.executeUpdate("INSERT INTO " + table_name
+					+ " (First, Last, Stylist, Phone, Address, Email, Hairstyle, Haircut, Products, Formula, Notes, Other) "
+					+ "VALUES (SELECT First, Last, Sytlist, Phone, Address, Email FROM clients WHERE id = " + client_id
+					+ "','" + hairstyle + "','" + haircut + "','" + products + "','" + formula + "','"
+					+ notes_and_preferences + "','" + other + "')");
 
 		} catch (SQLException e) {
 			System.out.println("coudln't add visit");
 			System.err.println(e.getMessage());
-			return false;
+		}
+	}
+
+	public static void create_table(String table_name) throws ClassNotFoundException {
+		try {
+			statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			String query = "CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT , First TEXT NOT NULL , Last TEXT NOT NULL, Stylist TEXT NOT NULL, Phone TEXT, Address TEXT NOT NULL, Email TEXT)";
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println("couldn't create table " + table_name);
+
+			System.err.println(e.getMessage());
 		}
 	}
 
 	/*
 	 * adds the client profile into the database
 	 */
-	public static boolean add_client_profile_to_database(String first_name, String last_name, String stylist,
+	public static void add_client_profile_to_database(String first_name, String last_name, String stylist,
 			String phone_number, String address, String email) throws ClassNotFoundException {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
-
-			statement.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS clients (id INT AUTO_INCREMENT primary key , First text NOT NULL , Last text NOT NULL, Stylist text NOT NULL, Phone text, Address text NOT NULL, Email text, Hairstyle text, Haircut text, Products text, Formula text, Notes text, Other text)");
+			create_table("clients");
+			// statement.executeUpdate(
+			// "CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY
+			// AUTOINCREMENT , First TEXT NOT NULL , Last TEXT NOT NULL, Stylist
+			// TEXT NOT NULL, Phone TEXT, Address TEXT NOT NULL, Email TEXT)");
 
 			statement.executeUpdate("INSERT INTO clients (First,Last,Stylist,Phone,Address,Email) " + "VALUES ('"
 					+ first_name + "','" + last_name + "','" + stylist + "','" + phone_number + "','" + address + "','"
 					+ email + "')");
-			return true;
 
 		} catch (SQLException e) {
 			System.out.println("couldn't add client profile");
 
 			System.err.println(e.getMessage());
-			return false;
 		}
+	}
+
+	/*
+	 * Select a certain piece of info from certain table
+	 */
+	public static String select_info(String table, String info) throws ClassNotFoundException {
+		ResultSet rs;
+		String output = "";
+		try {
+			statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			int client_id = View_List_Of_Clients.get_id();
+			String query = "SELECT " + info + " FROM " + table + " WHERE id = " + client_id;
+			System.out.println(query);
+			rs = statement.executeQuery(query);
+
+			while (rs.next()) {
+
+				output = rs.getString(info);
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("couldn't get info from table");
+			System.err.println(e.getMessage());
+		}
+
+		return output;
 	}
 
 	/*
@@ -105,7 +148,7 @@ public class ConnectionHandler {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
-			statement.executeUpdate("DELETE FROM clients");
+			statement.executeUpdate("DROP TABLE clients");
 		} catch (SQLException e) {
 			System.out.println("couldn't delete list");
 			System.err.println(e.getMessage());
