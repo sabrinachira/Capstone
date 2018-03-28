@@ -143,10 +143,8 @@ public class View_List_Of_Clients extends JFrame {
 						set_id(table.getValueAt(row, 0));
 						try {
 							ConnectionHandler.create_history_table();
-							System.out.println("history table created");
 						} catch (ClassNotFoundException e2) {
 							// TODO Auto-generated catch block
-							System.out.println("trying to create history table" + e2);
 						}
 						Object[] options = { "View Visit History", "Create a Visit" };
 

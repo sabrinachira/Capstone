@@ -137,19 +137,17 @@ public class Create_New_Visit extends JFrame {
 
 				if (confirm == JOptionPane.YES_OPTION) {
 					try {
-						String hairstyle = hairstyle_input.getText();
-						String haircut = haircut_input.getText();
-						String products_purchased = products_purchased_input.getText();
-						String formula = formula_input.getText();
-						String notes_and_preferences = notes_and_preferences_input.getText();
-						String other = other_input.getText();
+						String hairstyle = hairstyle_input.getText().toUpperCase();
+						String haircut = haircut_input.getText().toUpperCase();
+						String products_purchased = products_purchased_input.getText().toUpperCase();
+						String formula = formula_input.getText().toUpperCase();
+						String notes_and_preferences = notes_and_preferences_input.getText().toUpperCase();
+						String other = other_input.getText().toUpperCase();
 
 						// verify that there isn't a person with that name
 						// already and address already
-						System.out.println("before adding");
 						ConnectionHandler.add_visit_to_client_table(hairstyle, haircut, products_purchased, formula,
 								notes_and_preferences, other);
-						System.out.println("after adding");
 
 						Home_Page.client_history_frame = new Client_History();
 						Home_Page.client_history_frame.setVisible(true);

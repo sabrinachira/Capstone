@@ -79,12 +79,12 @@ public class New_Client_Profile extends JFrame {
 
 				if (confirm == JOptionPane.YES_OPTION) {
 					try {
-						String first_name = first_name_input.getText();
-						String last_name = last_name_input.getText();
-						String stylist = stylist_input.getText();
-						String phone_number = phone_number_input.getText();
-						String address = address_input.getText();
-						String email = email_input.getText();
+						String first_name = first_name_input.getText().toUpperCase();
+						String last_name = last_name_input.getText().toUpperCase();
+						String stylist = stylist_input.getText().toUpperCase();
+						String phone_number = phone_number_input.getText().toUpperCase();
+						String address = address_input.getText().toUpperCase();
+						String email = email_input.getText().toUpperCase();
 						if (first_name.equals("") || last_name.equals("") || stylist.equals("")
 								|| phone_number.equals("") || address.equals("") || email.equals("")) {
 							JOptionPane.showMessageDialog(null, "All fields must be filled.", "Empty Field(s)",
@@ -124,7 +124,7 @@ public class New_Client_Profile extends JFrame {
 		add(panel_new_client_profile);
 		pack();
 		setSize(800, 800);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 }

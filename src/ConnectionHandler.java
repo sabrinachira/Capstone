@@ -71,15 +71,9 @@ public class ConnectionHandler {
 
 			int client_id = View_List_Of_Clients.get_id();
 
-			String query = "INSERT INTO history (id, Hairstyle, Haircut, Products, Formula, Notes, Other) VALUES("
-					+ client_id + "," + hairstyle + "," + haircut + "," + products + "," + formula + ","
-					+ notes_and_preferences + "," + other + ")";
-			System.out.println(query);
-			System.out.println("before executing adding in connection handler");
-
-			statement.executeQuery(query);
-			System.out.println("after executing adding in connection handler");
-
+			statement.execute("INSERT INTO history (id, Hairstyle, Haircut, Products, Formula, Notes, Other) "
+					+ "VALUES ('" + client_id + "','" + hairstyle + "','" + haircut + "','" + products + "','" + formula
+					+ "','" + notes_and_preferences + "','" + other + "')");
 
 		} catch (SQLException e) {
 			System.out.println("coudln't add visit");
