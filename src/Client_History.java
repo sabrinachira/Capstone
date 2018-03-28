@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -63,8 +64,13 @@ public class Client_History extends JFrame {
 		add_new_client_visit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Home_Page.go_to_new_client_profile = new New_Client_Profile();
-				Home_Page.go_to_new_client_profile.setVisible(true);
+				try {
+					Home_Page.go_to_new_client_visit = new Create_New_Visit();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Home_Page.go_to_new_client_visit.setVisible(true);
 			}
 		});
 
@@ -75,7 +81,7 @@ public class Client_History extends JFrame {
 		list_of_visits.add(scroll_pane, BorderLayout.CENTER);
 		pack();
 		setSize(800, 800);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 
 	}
@@ -83,7 +89,8 @@ public class Client_History extends JFrame {
 	private void draw_Table() throws ClassNotFoundException {
 		Statement statement_draw_table = null;
 		try {
-			model = new DefaultTableModel(new String[] { "Stylist" , "Hairstyle" , "Haircut" , "Products" , "Formula", "Notes", "Other" }, 0) {
+			model = new DefaultTableModel(
+					new String[] { "Hairstyle", "Haircut", "Products", "Formula", "Notes", "Other" }, 0) {
 				public boolean isCellEditable(int rowIndex, int mColIndex) {
 					return false;
 				}
@@ -96,16 +103,16 @@ public class Client_History extends JFrame {
 			});
 
 			statement_draw_table = ConnectionHandler.connection.createStatement();
-			ResultSet rs = statement_draw_table.executeQuery(
-					"SELECT Stylist, Hairstyle, Haircut, Products, Formula, Notes, Other FROM table"
-							+ View_List_Of_Clients.get_id() + " ORDER BY Last,First");
-
+			ResultSet rs = statement_draw_table
+					.executeQuery("SELECT Hairstyle, Haircut, Products, Formula, Notes, Other FROM history WHERE id = " + View_List_Of_Clients.get_id());
 			while (rs.next()) {
-				int id = rs.getInt("ID");
-				String last_name = rs.getString("Last");
-				String first_name = rs.getString("First");
-				String stylist = rs.getString("Stylist");
-				model.addRow(new Object[] { id, last_name, first_name, stylist });
+				String hairstyle = rs.getString("Hairstyle");
+				String haircut = rs.getString("Haircut");
+				String products = rs.getString("Products");
+				String formula = rs.getString("Formula");
+				String notes = rs.getString("Notes");
+				String other = rs.getString("Other");
+				model.addRow(new Object[] { hairstyle, haircut, products, formula, notes, other });
 			}
 
 			table.setModel(model);

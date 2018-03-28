@@ -47,6 +47,19 @@ public class ConnectionHandler {
 		}
 	}
 
+	public static void create_history_table() throws ClassNotFoundException {
+		try {
+			statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			String query = "CREATE TABLE IF NOT EXISTS history (id INTEGER , Hairstyle TEXT, Haircut TEXT, Products TEXT, Formula TEXT, Notes TEXT, Other TEXT)";
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println("couldn't create history table");
+
+			System.err.println(e.getMessage());
+		}
+	}
+
 	/*
 	 * adds the client info and new visit into the database
 	 */
@@ -57,16 +70,16 @@ public class ConnectionHandler {
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 
 			int client_id = View_List_Of_Clients.get_id();
-			String table_name = "table" + client_id;
 
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + table_name
-					+ " (First TEXT NOT NULL , Last TEXT NOT NULL, Stylist TEXT NOT NULL, Phone TEXT, Address TEXT NOT NULL, Email TEXT, Hairstyle TEXT, Haircut TEXT, Products TEXT, Formula TEXT, Notes TEXT, Other TEXT)");
+			String query = "INSERT INTO history (id, Hairstyle, Haircut, Products, Formula, Notes, Other) VALUES("
+					+ client_id + "," + hairstyle + "," + haircut + "," + products + "," + formula + ","
+					+ notes_and_preferences + "," + other + ")";
+			System.out.println(query);
+			System.out.println("before executing adding in connection handler");
 
-			statement.executeUpdate("INSERT INTO " + table_name
-					+ " (First, Last, Stylist, Phone, Address, Email, Hairstyle, Haircut, Products, Formula, Notes, Other) "
-					+ "VALUES (SELECT First, Last, Sytlist, Phone, Address, Email FROM clients WHERE id = " + client_id
-					+ "','" + hairstyle + "','" + haircut + "','" + products + "','" + formula + "','"
-					+ notes_and_preferences + "','" + other + "')");
+			statement.executeQuery(query);
+			System.out.println("after executing adding in connection handler");
+
 
 		} catch (SQLException e) {
 			System.out.println("coudln't add visit");
@@ -148,7 +161,10 @@ public class ConnectionHandler {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
-			statement.executeUpdate("DROP TABLE clients");
+
+			boolean clients_dropped = statement.execute("DROP TABLE clients");
+			boolean history_dropped = statement.execute("DROP TABLE history");
+
 		} catch (SQLException e) {
 			System.out.println("couldn't delete list");
 			System.err.println(e.getMessage());

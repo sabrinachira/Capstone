@@ -124,7 +124,7 @@ public class New_Client_Profile extends JFrame {
 		add(panel_new_client_profile);
 		pack();
 		setSize(800, 800);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
 		setLocationRelativeTo(null);
 	}
 }

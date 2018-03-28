@@ -132,12 +132,11 @@ public class Create_New_Visit extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int confirm = JOptionPane.showConfirmDialog(null,
-						"Are you sure you want to save the creation of a new client profile?", "Save?",
+						"Are you sure you want to save the creation of a new client visit?", "Save?",
 						JOptionPane.YES_NO_OPTION);
 
 				if (confirm == JOptionPane.YES_OPTION) {
 					try {
-						String stylist = stylist_input.getText();
 						String hairstyle = hairstyle_input.getText();
 						String haircut = haircut_input.getText();
 						String products_purchased = products_purchased_input.getText();
@@ -147,12 +146,13 @@ public class Create_New_Visit extends JFrame {
 
 						// verify that there isn't a person with that name
 						// already and address already
-
+						System.out.println("before adding");
 						ConnectionHandler.add_visit_to_client_table(hairstyle, haircut, products_purchased, formula,
 								notes_and_preferences, other);
+						System.out.println("after adding");
 
-						Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
-						Home_Page.go_to_view_list_of_clients.setVisible(true);
+						Home_Page.client_history_frame = new Client_History();
+						Home_Page.client_history_frame.setVisible(true);
 						// New_Client_Profile.dispose();
 					} catch (Exception e1) {
 						e1.printStackTrace();

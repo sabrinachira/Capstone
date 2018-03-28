@@ -10,9 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -23,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -114,7 +110,10 @@ public class View_List_Of_Clients extends JFrame {
 		list_of_clients.add(scroll_pane, BorderLayout.CENTER);
 		pack();
 		setSize(800, 800);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		// setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 
@@ -142,18 +141,79 @@ public class View_List_Of_Clients extends JFrame {
 						set_last_name(table.getValueAt(row, 1));
 						set_stylist_name(table.getValueAt(row, 3));
 						set_id(table.getValueAt(row, 0));
-
+						try {
+							ConnectionHandler.create_history_table();
+							System.out.println("history table created");
+						} catch (ClassNotFoundException e2) {
+							// TODO Auto-generated catch block
+							System.out.println("trying to create history table" + e2);
+						}
 						Object[] options = { "View Visit History", "Create a Visit" };
 
 						JPanel panel = new JPanel();
+
 						panel.add(new JLabel(
 								"Please selet if you would like to create a visit for this client or view the client's visit history."));
 						int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_OPTION,
 								JOptionPane.PLAIN_MESSAGE, null, options, null);
-						if (result == JOptionPane.YES_OPTION) {
-							Home_Page.client_history_frame = new Client_History();
-							Home_Page.client_history_frame.setVisible(true);
-						} else {
+
+						if (result == JOptionPane.YES_OPTION) { // view history
+							Statement statement_draw_table = null;
+							ResultSet rs = null;
+							try {
+								ConnectionHandler.create_history_table();
+								Home_Page.client_history_frame = new Client_History();
+								Home_Page.client_history_frame.setVisible(true);
+								// statement_draw_table =
+								// ConnectionHandler.connection.createStatement();
+								// rs = statement_draw_table
+								// .executeQuery("SELECT count(*) FROM history
+								// WHERE id = " +
+								// View_List_Of_Clients.get_id());
+								//
+								// if (rs.next()) {
+								// boolean populated = rs.getBoolean(1);
+								// if (populated) {
+								// Home_Page.client_history_frame = new
+								// Client_History();
+								// Home_Page.client_history_frame.setVisible(true);
+								// } else {
+								// int input =
+								// JOptionPane.showOptionDialog(null,
+								// "Selected client does not have any visits.
+								// Select OK to create a visit. Select Cancel to
+								// go back to the list of clients.",
+								// "No Visits", JOptionPane.OK_CANCEL_OPTION,
+								// JOptionPane.INFORMATION_MESSAGE, null, null,
+								// null);
+								//
+								// if (input == JOptionPane.OK_OPTION) {
+								// try {
+								// Home_Page.go_to_new_client_visit = new
+								// Create_New_Visit();
+								// } catch (ClassNotFoundException e1) {
+								// // TODO Auto-generated catch
+								// // block
+								// e1.printStackTrace();
+								// }
+								// Home_Page.go_to_new_client_visit.setVisible(true);
+								//
+								// } else {
+								// Home_Page.go_to_view_list_of_clients = new
+								// View_List_Of_Clients();
+								// Home_Page.go_to_view_list_of_clients.setVisible(true);
+								// }
+								// }
+								//
+								// }
+							} catch (ClassNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
+						}
+
+						else { // create new visit
 							try {
 								Home_Page.go_to_new_client_visit = new Create_New_Visit();
 								Home_Page.go_to_new_client_visit.setVisible(true);
@@ -169,7 +229,7 @@ public class View_List_Of_Clients extends JFrame {
 
 			statement_draw_table = ConnectionHandler.connection.createStatement();
 			ResultSet rs = statement_draw_table
-					.executeQuery("SELECT id, Last, First, Stylist FROM clients ORDER BY id, Last,First;");
+					.executeQuery("SELECT id, Last, First, Stylist FROM clients ORDER BY Last, First, id;");
 
 			while (rs.next()) {
 				int id = rs.getInt("ID");
@@ -181,7 +241,9 @@ public class View_List_Of_Clients extends JFrame {
 
 			table.setModel(model);
 
-		} catch (SQLException e) {
+		} catch (
+
+		SQLException e) {
 			System.err.println("error: " + e.getMessage());
 		}
 	}
