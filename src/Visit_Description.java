@@ -84,12 +84,19 @@ public class Visit_Description extends JFrame {
 		visit_other.setForeground(Color.white);
 
 		vertical_box.add(visit_date);
+		vertical_box.add(Box.createVerticalStrut(20));
 		vertical_box.add(visit_stylist);
+		vertical_box.add(Box.createVerticalStrut(20));
 		vertical_box.add(visit_hairstyle);
+		vertical_box.add(Box.createVerticalStrut(20));
 		vertical_box.add(visit_haircut);
+		vertical_box.add(Box.createVerticalStrut(20));
 		vertical_box.add(visit_products);
+		vertical_box.add(Box.createVerticalStrut(20));
 		vertical_box.add(visit_formula);
+		vertical_box.add(Box.createVerticalStrut(20));
 		vertical_box.add(visit_notes);
+		vertical_box.add(Box.createVerticalStrut(20));
 		vertical_box.add(visit_other);
 
 		setLayout(new GridBagLayout());

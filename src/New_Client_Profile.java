@@ -35,26 +35,33 @@ public class New_Client_Profile extends JFrame {
 
 		JPanel panel_new_client_profile = new JPanel();
 
+		Font font = new Font("Bookman Old Style", Font.PLAIN, 20);
+
 		JLabel first_name_prompt = new JLabel("First Name: ");
 		first_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		first_name_prompt.setForeground(Color.white);
 		JTextField first_name_input = new JTextField(20);
+		first_name_input.setFont(font);
 		JLabel last_name_prompt = new JLabel("Last Name: ");
 		last_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		last_name_prompt.setForeground(Color.white);
 		JTextField last_name_input = new JTextField(20);
+		last_name_input.setFont(font);
 		JLabel phone_number_prompt = new JLabel("Phone Number: ");
 		phone_number_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		phone_number_prompt.setForeground(Color.white);
 		JTextField phone_number_input = new JTextField(20);
+		phone_number_input.setFont(font);
 		JLabel address_prompt = new JLabel("Address: ");
 		address_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		address_prompt.setForeground(Color.white);
 		JTextField address_input = new JTextField(20);
+		address_input.setFont(font);
 		JLabel email_prompt = new JLabel("Email: ");
 		email_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		email_prompt.setForeground(Color.white);
 		JTextField email_input = new JTextField(20);
+		email_input.setFont(font);
 
 		JButton save_profile = new JButton("SAVE");
 		JButton cancel = new JButton("CANCEL");
@@ -70,20 +77,26 @@ public class New_Client_Profile extends JFrame {
 		email_horizontal_box.add(email_prompt);
 		email_horizontal_box.add(email_input);
 		buttons_horizontal_box.add(save_profile);
+		buttons_horizontal_box.add(Box.createHorizontalStrut(20));
 		buttons_horizontal_box.add(cancel);
-
-		vertical_box.add(first_horizontal_box);
-		vertical_box.add(last_horizontal_box);
-		vertical_box.add(phone_horizontal_box);
-		vertical_box.add(address_horizontal_box);
-		vertical_box.add(email_horizontal_box);
-		vertical_box.add(buttons_horizontal_box);
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
 
+		vertical_box.add(first_horizontal_box);
+		vertical_box.add(Box.createVerticalStrut(20));
+		vertical_box.add(last_horizontal_box);
+		vertical_box.add(Box.createVerticalStrut(20));
+		vertical_box.add(phone_horizontal_box);
+		vertical_box.add(Box.createVerticalStrut(20));
+		vertical_box.add(address_horizontal_box);
+		vertical_box.add(Box.createVerticalStrut(20));
+		vertical_box.add(email_horizontal_box);
+		vertical_box.add(Box.createVerticalStrut(20));
+		vertical_box.add(buttons_horizontal_box);
+		
 		panel_new_client_profile.add(vertical_box, gbc);
 
 		save_profile.addActionListener(new ActionListener() {
