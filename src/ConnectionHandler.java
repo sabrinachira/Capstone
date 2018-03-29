@@ -47,11 +47,14 @@ public class ConnectionHandler {
 		}
 	}
 
+	/*
+	 * creates the visit history of a client
+	 */
 	public static void create_history_table() throws ClassNotFoundException {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
-			String query = "CREATE TABLE IF NOT EXISTS history (id INTEGER , Hairstyle TEXT, Haircut TEXT, Products TEXT, Formula TEXT, Notes TEXT, Other TEXT)";
+			String query = "CREATE TABLE IF NOT EXISTS history (id INTEGER , Hairstyle TEXT, Haircut TEXT, Products TEXT, Formula TEXT, Notes TEXT, Other TEXT, Date TEXT)";
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
 			System.out.println("couldn't create history table");
@@ -64,16 +67,16 @@ public class ConnectionHandler {
 	 * adds the client info and new visit into the database
 	 */
 	public static void add_visit_to_client_table(String hairstyle, String haircut, String products, String formula,
-			String notes_and_preferences, String other) throws ClassNotFoundException {
+			String notes_and_preferences, String other, String date) throws ClassNotFoundException {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 
 			int client_id = View_List_Of_Clients.get_id();
 
-			statement.execute("INSERT INTO history (id, Hairstyle, Haircut, Products, Formula, Notes, Other) "
+			statement.execute("INSERT INTO history (id, Hairstyle, Haircut, Products, Formula, Notes, Other, Date) "
 					+ "VALUES ('" + client_id + "','" + hairstyle + "','" + haircut + "','" + products + "','" + formula
-					+ "','" + notes_and_preferences + "','" + other + "')");
+					+ "','" + notes_and_preferences + "','" + other + "','" + date + "')");
 
 		} catch (SQLException e) {
 			System.out.println("coudln't add visit");
@@ -158,6 +161,7 @@ public class ConnectionHandler {
 
 			boolean clients_dropped = statement.execute("DROP TABLE clients");
 			boolean history_dropped = statement.execute("DROP TABLE history");
+			boolean description_dropped = statement.execute("DROP TABLE description");
 
 		} catch (SQLException e) {
 			System.out.println("couldn't delete list");

@@ -1,3 +1,9 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,16 +37,28 @@ public class New_Client_Profile extends JFrame {
 		JPanel panel_new_client_profile = new JPanel();
 
 		JLabel first_name_prompt = new JLabel("First Name: ");
+		first_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		first_name_prompt.setForeground(Color.white);
 		JTextField first_name_input = new JTextField(20);
 		JLabel last_name_prompt = new JLabel("Last Name: ");
+		last_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		last_name_prompt.setForeground(Color.white);
 		JTextField last_name_input = new JTextField(20);
 		JLabel phone_number_prompt = new JLabel("Phone Number: ");
+		phone_number_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		phone_number_prompt.setForeground(Color.white);
 		JTextField phone_number_input = new JTextField(20);
 		JLabel address_prompt = new JLabel("Address: ");
+		address_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		address_prompt.setForeground(Color.white);
 		JTextField address_input = new JTextField(20);
 		JLabel email_prompt = new JLabel("Email: ");
+		email_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		email_prompt.setForeground(Color.white);
 		JTextField email_input = new JTextField(20);
 		JLabel stylist_prompt = new JLabel("Sylist: ");
+		stylist_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		stylist_prompt.setForeground(Color.white);
 		JTextField stylist_input = new JTextField(20);
 
 		JButton save_profile = new JButton("SAVE");
@@ -68,7 +86,13 @@ public class New_Client_Profile extends JFrame {
 		vertical_box.add(address_horizontal_box);
 		vertical_box.add(email_horizontal_box);
 		vertical_box.add(buttons_horizontal_box);
-		panel_new_client_profile.add(vertical_box);
+
+		setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		panel_new_client_profile.add(vertical_box, gbc);
 
 		save_profile.addActionListener(new ActionListener() {
 			@Override
@@ -98,6 +122,7 @@ public class New_Client_Profile extends JFrame {
 
 							Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
 							Home_Page.go_to_view_list_of_clients.setVisible(true);
+							Home_Page.go_to_new_client_profile.dispose();
 						}
 						// New_Client_Profile.dispose();
 					} catch (Exception e1) {
@@ -120,10 +145,15 @@ public class New_Client_Profile extends JFrame {
 				}
 			}
 		});
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int) screenSize.getHeight() - 100;
+		int width = (int) screenSize.getWidth() - 100;
 
 		add(panel_new_client_profile);
+		panel_new_client_profile.setBackground(Color.decode("#660033"));
+		getContentPane().setBackground(Color.decode("#660033"));
 		pack();
-		setSize(800, 800);
+		setSize(width - 1000, height - 200);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

@@ -1,7 +1,12 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
@@ -9,13 +14,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -26,10 +31,14 @@ public class Client_History extends JFrame {
 	DefaultTableModel model = null;
 	JTable table = null;
 	Connection connection1 = null;
-	static String first_name;
-	static String last_name;
-	static String stylist_name;
-	static int id;
+	static String visit_stylist;
+	static String visit_hairstyle;
+	static String visit_haircut;
+	static String visit_products;
+	static String visit_formula;
+	static String visit_notes;
+	static String visit_other;
+	static String visit_date;
 
 	public Client_History() {
 		try {
@@ -43,21 +52,62 @@ public class Client_History extends JFrame {
 		JMenu Options = new JMenu("Options");
 		table = new JTable();
 
-		JPopupMenu popup = new JPopupMenu();
-
 		JMenuItem add_new_client_visit = new JMenuItem("Add New Client Visit");
+		JMenuItem view_client_list = new JMenuItem("View List of Clients");
 
 		menu_bar.add(Options);
 
 		Options.add(add_new_client_visit);
+		Options.add(view_client_list);
 
 		setJMenuBar(menu_bar);
-		JPanel list_of_visits = new JPanel();
 
+		JPanel list_of_visits = new JPanel();
+		String first = "";
+		String last = "";
+		String phone = "";
+		String address = "";
+		String email = "";
+
+		try {
+			Statement statement_draw_table = ConnectionHandler.connection.createStatement();
+			ResultSet rs = statement_draw_table
+					.executeQuery("SELECT First, Last, Phone, Address, Email FROM clients WHERE id = "
+							+ View_List_Of_Clients.get_id());
+			while (rs.next()) {
+				first = rs.getString("First");
+				last = rs.getString("Last");
+				phone = rs.getString("Phone");
+				address = rs.getString("Address");
+				email = rs.getString("Email");
+			}
+		} catch (SQLException e3) {
+			e3.printStackTrace();
+		}
+
+		JLabel name = new JLabel(first + " " + last);
+		name.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		name.setForeground(Color.white);
+		JLabel phone_info = new JLabel(phone);
+		phone_info.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		phone_info.setForeground(Color.white);
+		JLabel address_info = new JLabel(address);
+		address_info.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		address_info.setForeground(Color.white);
+		JLabel email_info = new JLabel(email);
+		email_info.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		email_info.setForeground(Color.white);
+		
+		Box info_box = Box.createVerticalBox();
+		info_box.add(name);
+		info_box.add(phone_info);
+		info_box.add(address_info);
+		info_box.add(email_info);
+
+		list_of_visits.add(info_box);
 		try {
 			draw_Table();
 		} catch (ClassNotFoundException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 
@@ -66,21 +116,35 @@ public class Client_History extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Home_Page.go_to_new_client_visit = new Create_New_Visit();
+					Home_Page.go_to_new_client_visit.setVisible(true);
+					Home_Page.client_history_frame.dispose();
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				Home_Page.go_to_new_client_visit.setVisible(true);
 			}
 		});
 
+		view_client_list.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Home_Page.go_to_view_list_of_clients.setVisible(true);
+				Home_Page.client_history_frame.dispose();
+			}
+		});
+
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int) screenSize.getHeight() - 100;
+		int width = (int) screenSize.getWidth() - 100;
+
 		table.setRowHeight(30);
 		JScrollPane scroll_pane = new JScrollPane(table);
-		scroll_pane.setPreferredSize(new Dimension(700, 700));
+		scroll_pane.setPreferredSize(new Dimension(width - 500, height - 400));
+
 		add(list_of_visits);
+		list_of_visits.setBackground(Color.decode("#660033"));
 		list_of_visits.add(scroll_pane, BorderLayout.CENTER);
 		pack();
-		setSize(800, 800);
+		setSize(width, height - 100);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 
@@ -90,7 +154,7 @@ public class Client_History extends JFrame {
 		Statement statement_draw_table = null;
 		try {
 			model = new DefaultTableModel(
-					new String[] { "Hairstyle", "Haircut", "Products", "Formula", "Notes", "Other" }, 0) {
+					new String[] { "Hairstyle", "Haircut", "Products", "Formula", "Notes", "Other", "Date" }, 0) {
 				public boolean isCellEditable(int rowIndex, int mColIndex) {
 					return false;
 				}
@@ -102,9 +166,33 @@ public class Client_History extends JFrame {
 				}
 			});
 
+			table.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() == 2) {
+						int row = table.rowAtPoint(e.getPoint());
+						set_hairstyle((String) table.getValueAt(row, 0));
+						set_haircut((String) table.getValueAt(row, 2));
+						set_products((String) table.getValueAt(row, 1));
+						set_formula((String) table.getValueAt(row, 3));
+						set_notes((String) table.getValueAt(row, 4));
+						set_other((String) table.getValueAt(row, 5));
+						set_date((String) table.getValueAt(row, 6));
+
+						try {
+							Home_Page.go_to_visit_description = new Visit_Description();
+							Home_Page.go_to_visit_description.setVisible(true);
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+
+					}
+				}
+			});
+
 			statement_draw_table = ConnectionHandler.connection.createStatement();
-			ResultSet rs = statement_draw_table
-					.executeQuery("SELECT Hairstyle, Haircut, Products, Formula, Notes, Other FROM history WHERE id = " + View_List_Of_Clients.get_id());
+			ResultSet rs = statement_draw_table.executeQuery(
+					"SELECT Hairstyle, Haircut, Products, Formula, Notes, Other, Date FROM history WHERE id = "
+							+ View_List_Of_Clients.get_id() + " ORDER BY Date");
 			while (rs.next()) {
 				String hairstyle = rs.getString("Hairstyle");
 				String haircut = rs.getString("Haircut");
@@ -112,7 +200,8 @@ public class Client_History extends JFrame {
 				String formula = rs.getString("Formula");
 				String notes = rs.getString("Notes");
 				String other = rs.getString("Other");
-				model.addRow(new Object[] { hairstyle, haircut, products, formula, notes, other });
+				String date = rs.getString("Date");
+				model.addRow(new Object[] { hairstyle, haircut, products, formula, notes, other, date });
 			}
 
 			table.setModel(model);
@@ -121,4 +210,69 @@ public class Client_History extends JFrame {
 			System.err.println("error: " + e.getMessage());
 		}
 	}
+
+	public void set_stylist(String stylist) {
+		visit_stylist = stylist;
+	}
+
+	public static String get_stylist() {
+		return visit_stylist;
+	}
+
+	public void set_hairstyle(String style) {
+		visit_hairstyle = style;
+	}
+
+	public static String get_hairstyle() {
+		return visit_hairstyle;
+	}
+
+	public void set_haircut(String cut) {
+		visit_haircut = cut;
+	}
+
+	public static String get_haircut() {
+		return visit_haircut;
+	}
+
+	public void set_products(String products) {
+		visit_products = products;
+	}
+
+	public static String get_products() {
+		return visit_products;
+	}
+
+	public void set_formula(String formula) {
+		visit_formula = formula;
+	}
+
+	public static String get_formula() {
+		return visit_formula;
+	}
+
+	public void set_notes(String notes) {
+		visit_notes = notes;
+	}
+
+	public static String get_notes() {
+		return visit_notes;
+	}
+
+	public void set_other(String other) {
+		visit_other = other;
+	}
+
+	public static String get_other() {
+		return visit_other;
+	}
+
+	public void set_date(String date) {
+		visit_date = date;
+	}
+
+	public static String get_date() {
+		return visit_date;
+	}
+
 }

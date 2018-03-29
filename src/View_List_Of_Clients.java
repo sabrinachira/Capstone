@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,7 +20,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -45,8 +46,6 @@ public class View_List_Of_Clients extends JFrame {
 		JMenu Options = new JMenu("Options");
 		table = new JTable();
 
-		JPopupMenu popup = new JPopupMenu();
-
 		JMenuItem delete_whole_table = new JMenuItem("Delete Whole Table");
 		JMenuItem add_new_client = new JMenuItem("Add New Client Profile");
 
@@ -61,7 +60,6 @@ public class View_List_Of_Clients extends JFrame {
 		try {
 			draw_Table();
 		} catch (ClassNotFoundException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 
@@ -84,12 +82,13 @@ public class View_List_Of_Clients extends JFrame {
 						try {
 							draw_Table();
 						} catch (ClassNotFoundException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					} else {
 					}
+				} else if (confirm == JOptionPane.NO_OPTION) {
 				} else {
+
 				}
 
 			}
@@ -102,18 +101,21 @@ public class View_List_Of_Clients extends JFrame {
 				Home_Page.go_to_new_client_profile.setVisible(true);
 			}
 		});
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int) screenSize.getHeight() - 100;
+		int width = (int) screenSize.getWidth() - 100;
 
 		table.setRowHeight(30);
 		JScrollPane scroll_pane = new JScrollPane(table);
-		scroll_pane.setPreferredSize(new Dimension(700, 700));
+		scroll_pane.setPreferredSize(new Dimension(width - 1100, height - 300));
 		add(list_of_clients);
+		list_of_clients.setBackground(Color.decode("#660033"));
 		list_of_clients.add(scroll_pane, BorderLayout.CENTER);
+
 		pack();
-		setSize(800, 800);
+		setSize(width - 1000, height - 200);
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-		// setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		// setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 
@@ -144,81 +146,32 @@ public class View_List_Of_Clients extends JFrame {
 						try {
 							ConnectionHandler.create_history_table();
 						} catch (ClassNotFoundException e2) {
-							// TODO Auto-generated catch block
 						}
 						Object[] options = { "View Visit History", "Create a Visit" };
 
 						JPanel panel = new JPanel();
 
 						panel.add(new JLabel(
-								"Please selet if you would like to create a visit for this client or view the client's visit history."));
+								"Please selet if you would like to view the client's visit history or create a visit for this client."));
 						int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_OPTION,
 								JOptionPane.PLAIN_MESSAGE, null, options, null);
-
-						if (result == JOptionPane.YES_OPTION) { // view history
-							Statement statement_draw_table = null;
-							ResultSet rs = null;
-							try {
-								ConnectionHandler.create_history_table();
-								Home_Page.client_history_frame = new Client_History();
-								Home_Page.client_history_frame.setVisible(true);
-								// statement_draw_table =
-								// ConnectionHandler.connection.createStatement();
-								// rs = statement_draw_table
-								// .executeQuery("SELECT count(*) FROM history
-								// WHERE id = " +
-								// View_List_Of_Clients.get_id());
-								//
-								// if (rs.next()) {
-								// boolean populated = rs.getBoolean(1);
-								// if (populated) {
-								// Home_Page.client_history_frame = new
-								// Client_History();
-								// Home_Page.client_history_frame.setVisible(true);
-								// } else {
-								// int input =
-								// JOptionPane.showOptionDialog(null,
-								// "Selected client does not have any visits.
-								// Select OK to create a visit. Select Cancel to
-								// go back to the list of clients.",
-								// "No Visits", JOptionPane.OK_CANCEL_OPTION,
-								// JOptionPane.INFORMATION_MESSAGE, null, null,
-								// null);
-								//
-								// if (input == JOptionPane.OK_OPTION) {
-								// try {
-								// Home_Page.go_to_new_client_visit = new
-								// Create_New_Visit();
-								// } catch (ClassNotFoundException e1) {
-								// // TODO Auto-generated catch
-								// // block
-								// e1.printStackTrace();
-								// }
-								// Home_Page.go_to_new_client_visit.setVisible(true);
-								//
-								// } else {
-								// Home_Page.go_to_view_list_of_clients = new
-								// View_List_Of_Clients();
-								// Home_Page.go_to_view_list_of_clients.setVisible(true);
-								// }
-								// }
-								//
-								// }
-							} catch (ClassNotFoundException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-
+						// view history
+						if (result == JOptionPane.YES_OPTION) {
+							Home_Page.client_history_frame = new Client_History();
+							Home_Page.client_history_frame.setVisible(true);
+							Home_Page.go_to_view_list_of_clients.setVisible(false);
 						}
-
-						else { // create new visit
+						// create new visitF
+						else if (result == JOptionPane.NO_OPTION) {
 							try {
 								Home_Page.go_to_new_client_visit = new Create_New_Visit();
 								Home_Page.go_to_new_client_visit.setVisible(true);
+								Home_Page.go_to_view_list_of_clients.setVisible(false);
 							} catch (ClassNotFoundException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
+						} else {
+
 						}
 
 					}
@@ -271,7 +224,7 @@ public class View_List_Of_Clients extends JFrame {
 	}
 
 	public void set_id(Object id) {
-		this.id = (int) id;
+		View_List_Of_Clients.id = (int) id;
 	}
 
 	public static int get_id() {

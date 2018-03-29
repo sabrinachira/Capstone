@@ -1,5 +1,13 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -11,6 +19,7 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class Create_New_Visit extends JFrame {
+	SimpleDateFormat simple_date;
 
 	public Create_New_Visit() throws ClassNotFoundException {
 		try {
@@ -32,18 +41,28 @@ public class Create_New_Visit extends JFrame {
 		Box email_horizontal_box = Box.createHorizontalBox();
 
 		JLabel first_name_prompt = new JLabel("First Name: ");
+		first_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		first_name_prompt.setForeground(Color.white);
 		JTextField first_name_input = new JTextField(20);
 		first_name_input.setText(View_List_Of_Clients.get_first_name());
 		JLabel last_name_prompt = new JLabel("Last Name: ");
+		last_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		last_name_prompt.setForeground(Color.white);
 		JTextField last_name_input = new JTextField(20);
 		last_name_input.setText(View_List_Of_Clients.get_last_name());
 		JLabel phone_number_prompt = new JLabel("Phone Number: ");
+		phone_number_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		phone_number_prompt.setForeground(Color.white);
 		JTextField phone_number_input = new JTextField(20);
 		phone_number_input.setText(ConnectionHandler.select_info("clients", "Phone"));
 		JLabel address_prompt = new JLabel("Address: ");
+		address_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		address_prompt.setForeground(Color.white);
 		JTextField address_input = new JTextField(20);
 		address_input.setText(ConnectionHandler.select_info("clients", "Address"));
 		JLabel email_prompt = new JLabel("Email: ");
+		email_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		email_prompt.setForeground(Color.white);
 		JTextField email_input = new JTextField(20);
 		email_input.setText(ConnectionHandler.select_info("clients", "Email"));
 
@@ -76,19 +95,33 @@ public class Create_New_Visit extends JFrame {
 		JPanel panel_new_visit = new JPanel();
 
 		JLabel stylist_prompt = new JLabel("Stylist: ");
+		stylist_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		stylist_prompt.setForeground(Color.white);
 		JTextField stylist_input = new JTextField(20);
 		stylist_input.setText(ConnectionHandler.select_info("clients", "Stylist"));
 		JLabel hairstyle_prompt = new JLabel("Hairstyle: ");
+		hairstyle_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		hairstyle_prompt.setForeground(Color.white);
 		JTextField hairstyle_input = new JTextField(20);
 		JLabel haircut_prompt = new JLabel("Haircut Length: ");
+		haircut_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		haircut_prompt.setForeground(Color.white);
 		JTextField haircut_input = new JTextField(20);
 		JLabel products_purchased_prompt = new JLabel("Products Purchased: ");
+		products_purchased_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		products_purchased_prompt.setForeground(Color.white);
 		JTextField products_purchased_input = new JTextField(20);
 		JLabel formula_prompt = new JLabel("Formula: ");
+		formula_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		formula_prompt.setForeground(Color.white);
 		JTextField formula_input = new JTextField(20);
 		JLabel notes_and_preferences_prompt = new JLabel("Notes & Preferences: ");
+		notes_and_preferences_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		notes_and_preferences_prompt.setForeground(Color.white);
 		JTextField notes_and_preferences_input = new JTextField(20);
 		JLabel other_prompt = new JLabel("Other: ");
+		other_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		other_prompt.setForeground(Color.white);
 		JTextField other_input = new JTextField(20);
 		JButton save_profile = new JButton("SAVE");
 		JButton cancel = new JButton("CANCEL");
@@ -110,6 +143,7 @@ public class Create_New_Visit extends JFrame {
 
 		buttons_horizontal_box.add(save_profile);
 		buttons_horizontal_box.add(cancel);
+		
 		buttons_vertical_box.add(buttons_horizontal_box);
 
 		vertical_box2.add(stylist_horizontal_box);
@@ -122,9 +156,18 @@ public class Create_New_Visit extends JFrame {
 
 		vertical_box_horizontal.add(vertical_box);
 		vertical_box_horizontal.add(vertical_box2);
-
-		panel_new_visit.add(vertical_box_horizontal);
-		panel_new_visit.add(buttons_vertical_box);
+		
+		Box final_vertical = Box.createVerticalBox();
+		final_vertical.add(vertical_box_horizontal);
+		final_vertical.add(buttons_horizontal_box);
+		
+		setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
+		panel_new_visit.add(final_vertical,gbc);
+		//panel_new_visit.add(buttons_vertical_box);
 
 		// display user profile at the top.
 
@@ -144,18 +187,27 @@ public class Create_New_Visit extends JFrame {
 						String notes_and_preferences = notes_and_preferences_input.getText().toUpperCase();
 						String other = other_input.getText().toUpperCase();
 
+						Date date = new Date();
+						simple_date = new SimpleDateFormat("MM-dd-yyyy | hh:mm:ss a");
+						String visit_date = simple_date.format(date);
 						// verify that there isn't a person with that name
 						// already and address already
 						ConnectionHandler.add_visit_to_client_table(hairstyle, haircut, products_purchased, formula,
-								notes_and_preferences, other);
+								notes_and_preferences, other, visit_date);
 
 						Home_Page.client_history_frame = new Client_History();
 						Home_Page.client_history_frame.setVisible(true);
+						Home_Page.go_to_new_client_visit.dispose();
 						// New_Client_Profile.dispose();
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
+				} else if (confirm == JOptionPane.NO_OPTION) {
+
 				} else {
+					Home_Page.client_history_frame = new Client_History();
+					Home_Page.client_history_frame.setVisible(true);
+					Home_Page.go_to_new_client_visit.dispose();
 				}
 			}
 		});
@@ -173,9 +225,15 @@ public class Create_New_Visit extends JFrame {
 			}
 		});
 
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int) screenSize.getHeight() - 100;
+		int width = (int) screenSize.getWidth() - 100;
+
 		add(panel_new_visit);
+		panel_new_visit.setBackground(Color.decode("#660033"));
+		getContentPane().setBackground(Color.decode("#660033"));
 		pack();
-		setSize(800, 800);
+		setSize(width-800, height-300);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
