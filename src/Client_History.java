@@ -204,8 +204,6 @@ public class Client_History extends JFrame {
 				String notes = rs.getString("Notes");
 				String other = rs.getString("Other");
 				String date = rs.getString("Date");
-				System.out.println("4");
-
 				model.addRow(new Object[] { stylist, hairstyle, haircut, products, formula, notes, other, date });
 			}
 

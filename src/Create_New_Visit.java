@@ -216,10 +216,11 @@ public class Create_New_Visit extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int confirm = JOptionPane.showConfirmDialog(null,
-						"Are you sure you want to cancel the creation of a new client profile?", "Cancel?",
+						"Are you sure you want to cancel the creation of a new client visit?", "Cancel?",
 						JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
 					Home_Page.go_to_new_client_visit.dispose();
+					Home_Page.go_to_view_list_of_clients.setVisible(true);
 				} else {
 				}
 			}
