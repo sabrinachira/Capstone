@@ -32,7 +32,6 @@ public class New_Client_Profile extends JFrame {
 		Box address_horizontal_box = Box.createHorizontalBox();
 		Box email_horizontal_box = Box.createHorizontalBox();
 		Box buttons_horizontal_box = Box.createHorizontalBox();
-		Box stylist_horizontal_box = Box.createHorizontalBox();
 
 		JPanel panel_new_client_profile = new JPanel();
 
@@ -56,10 +55,6 @@ public class New_Client_Profile extends JFrame {
 		email_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		email_prompt.setForeground(Color.white);
 		JTextField email_input = new JTextField(20);
-		JLabel stylist_prompt = new JLabel("Sylist: ");
-		stylist_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-		stylist_prompt.setForeground(Color.white);
-		JTextField stylist_input = new JTextField(20);
 
 		JButton save_profile = new JButton("SAVE");
 		JButton cancel = new JButton("CANCEL");
@@ -74,14 +69,11 @@ public class New_Client_Profile extends JFrame {
 		address_horizontal_box.add(address_input);
 		email_horizontal_box.add(email_prompt);
 		email_horizontal_box.add(email_input);
-		stylist_horizontal_box.add(stylist_prompt);
-		stylist_horizontal_box.add(stylist_input);
 		buttons_horizontal_box.add(save_profile);
 		buttons_horizontal_box.add(cancel);
 
 		vertical_box.add(first_horizontal_box);
 		vertical_box.add(last_horizontal_box);
-		vertical_box.add(stylist_horizontal_box);
 		vertical_box.add(phone_horizontal_box);
 		vertical_box.add(address_horizontal_box);
 		vertical_box.add(email_horizontal_box);
@@ -105,20 +97,19 @@ public class New_Client_Profile extends JFrame {
 					try {
 						String first_name = first_name_input.getText().toUpperCase();
 						String last_name = last_name_input.getText().toUpperCase();
-						String stylist = stylist_input.getText().toUpperCase();
 						String phone_number = phone_number_input.getText().toUpperCase();
 						String address = address_input.getText().toUpperCase();
 						String email = email_input.getText().toUpperCase();
-						if (first_name.equals("") || last_name.equals("") || stylist.equals("")
-								|| phone_number.equals("") || address.equals("") || email.equals("")) {
+						if (first_name.equals("") || last_name.equals("") || phone_number.equals("")
+								|| address.equals("") || email.equals("")) {
 							JOptionPane.showMessageDialog(null, "All fields must be filled.", "Empty Field(s)",
 									JOptionPane.PLAIN_MESSAGE);
 
 						} else {
 							// verify that there isn't a person with that name
 							// already and address already
-							ConnectionHandler.add_client_profile_to_database(first_name, last_name, stylist,
-									phone_number, address, email);
+							ConnectionHandler.add_client_profile_to_database(first_name, last_name, phone_number,
+									address, email);
 
 							Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
 							Home_Page.go_to_view_list_of_clients.setVisible(true);

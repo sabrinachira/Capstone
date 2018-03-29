@@ -54,7 +54,7 @@ public class ConnectionHandler {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
-			String query = "CREATE TABLE IF NOT EXISTS history (id INTEGER , Hairstyle TEXT, Haircut TEXT, Products TEXT, Formula TEXT, Notes TEXT, Other TEXT, Date TEXT)";
+			String query = "CREATE TABLE IF NOT EXISTS history (id INTEGER , Stylist TEXT, Hairstyle TEXT, Haircut TEXT, Products TEXT, Formula TEXT, Notes TEXT, Other TEXT, Date TEXT)";
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
 			System.out.println("couldn't create history table");
@@ -66,17 +66,19 @@ public class ConnectionHandler {
 	/*
 	 * adds the client info and new visit into the database
 	 */
-	public static void add_visit_to_client_table(String hairstyle, String haircut, String products, String formula,
-			String notes_and_preferences, String other, String date) throws ClassNotFoundException {
+	public static void add_visit_to_history_table(String stylist, String hairstyle, String haircut, String products,
+			String formula, String notes_and_preferences, String other, String date) throws ClassNotFoundException {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 
 			int client_id = View_List_Of_Clients.get_id();
 
-			statement.execute("INSERT INTO history (id, Hairstyle, Haircut, Products, Formula, Notes, Other, Date) "
-					+ "VALUES ('" + client_id + "','" + hairstyle + "','" + haircut + "','" + products + "','" + formula
-					+ "','" + notes_and_preferences + "','" + other + "','" + date + "')");
+			statement.execute(
+					"INSERT INTO history (id, Stylist, Hairstyle, Haircut, Products, Formula, Notes, Other, Date) "
+							+ "VALUES ('" + client_id + "','" + stylist + "','" + hairstyle + "','" + haircut + "','"
+							+ products + "','" + formula + "','" + notes_and_preferences + "','" + other + "','" + date
+							+ "')");
 
 		} catch (SQLException e) {
 			System.out.println("coudln't add visit");
@@ -88,7 +90,7 @@ public class ConnectionHandler {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
-			String query = "CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT , First TEXT NOT NULL , Last TEXT NOT NULL, Stylist TEXT NOT NULL, Phone TEXT, Address TEXT NOT NULL, Email TEXT)";
+			String query = "CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY AUTOINCREMENT , First TEXT NOT NULL , Last TEXT NOT NULL, Phone TEXT, Address TEXT NOT NULL, Email TEXT)";
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
 			System.out.println("couldn't create table " + table_name);
@@ -100,26 +102,20 @@ public class ConnectionHandler {
 	/*
 	 * adds the client profile into the database
 	 */
-	public static void add_client_profile_to_database(String first_name, String last_name, String stylist,
-			String phone_number, String address, String email) throws ClassNotFoundException {
+	public static void add_client_profile_to_database(String first_name, String last_name, String phone_number,
+			String address, String email) throws ClassNotFoundException {
 		try {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			create_table("clients");
-			// statement.executeUpdate(
-			// "CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY
-			// AUTOINCREMENT , First TEXT NOT NULL , Last TEXT NOT NULL, Stylist
-			// TEXT NOT NULL, Phone TEXT, Address TEXT NOT NULL, Email TEXT)");
-
-			statement.executeUpdate("INSERT INTO clients (First,Last,Stylist,Phone,Address,Email) " + "VALUES ('"
-					+ first_name + "','" + last_name + "','" + stylist + "','" + phone_number + "','" + address + "','"
-					+ email + "')");
+			statement.executeUpdate("INSERT INTO clients (First,Last,Phone,Address,Email) " + "VALUES ('" + first_name
+					+ "','" + last_name + "','" + phone_number + "','" + address + "','" + email + "')");
 
 		} catch (SQLException e) {
 			System.out.println("couldn't add client profile");
-
 			System.err.println(e.getMessage());
 		}
+
 	}
 
 	/*
@@ -161,7 +157,6 @@ public class ConnectionHandler {
 
 			boolean clients_dropped = statement.execute("DROP TABLE clients");
 			boolean history_dropped = statement.execute("DROP TABLE history");
-			boolean description_dropped = statement.execute("DROP TABLE description");
 
 		} catch (SQLException e) {
 			System.out.println("couldn't delete list");

@@ -123,7 +123,7 @@ public class View_List_Of_Clients extends JFrame {
 		Statement statement_draw_table = null;
 		try {
 			ConnectionHandler.create_table("clients");
-			model = new DefaultTableModel(new String[] { "ID", "Last Name", "First Name", "Stylist" }, 0) {
+			model = new DefaultTableModel(new String[] { "ID", "Last Name", "First Name"}, 0) {
 				public boolean isCellEditable(int rowIndex, int mColIndex) {
 					return false;
 				}
@@ -141,7 +141,6 @@ public class View_List_Of_Clients extends JFrame {
 						int row = table.rowAtPoint(e.getPoint());
 						set_first_name(table.getValueAt(row, 2));
 						set_last_name(table.getValueAt(row, 1));
-						set_stylist_name(table.getValueAt(row, 3));
 						set_id(table.getValueAt(row, 0));
 						try {
 							ConnectionHandler.create_history_table();
@@ -180,14 +179,13 @@ public class View_List_Of_Clients extends JFrame {
 
 			statement_draw_table = ConnectionHandler.connection.createStatement();
 			ResultSet rs = statement_draw_table
-					.executeQuery("SELECT id, Last, First, Stylist FROM clients ORDER BY Last, First, id;");
+					.executeQuery("SELECT id, Last, First FROM clients ORDER BY Last, First, id;");
 
 			while (rs.next()) {
 				int id = rs.getInt("ID");
 				String last_name = rs.getString("Last");
 				String first_name = rs.getString("First");
-				String stylist = rs.getString("Stylist");
-				model.addRow(new Object[] { id, last_name, first_name, stylist });
+				model.addRow(new Object[] { id, last_name, first_name});
 			}
 
 			table.setModel(model);

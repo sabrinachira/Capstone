@@ -97,7 +97,7 @@ public class Client_History extends JFrame {
 		JLabel email_info = new JLabel(email);
 		email_info.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		email_info.setForeground(Color.white);
-		
+
 		Box info_box = Box.createVerticalBox();
 		info_box.add(name);
 		info_box.add(phone_info);
@@ -154,7 +154,8 @@ public class Client_History extends JFrame {
 		Statement statement_draw_table = null;
 		try {
 			model = new DefaultTableModel(
-					new String[] { "Hairstyle", "Haircut", "Products", "Formula", "Notes", "Other", "Date" }, 0) {
+					new String[] { "Stylist", "Hairstyle", "Haircut", "Products", "Formula", "Notes", "Other", "Date" },
+					0) {
 				public boolean isCellEditable(int rowIndex, int mColIndex) {
 					return false;
 				}
@@ -170,13 +171,14 @@ public class Client_History extends JFrame {
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
 						int row = table.rowAtPoint(e.getPoint());
-						set_hairstyle((String) table.getValueAt(row, 0));
+						set_stylist((String) table.getValueAt(row, 0));
+						set_hairstyle((String) table.getValueAt(row, 1));
 						set_haircut((String) table.getValueAt(row, 2));
-						set_products((String) table.getValueAt(row, 1));
-						set_formula((String) table.getValueAt(row, 3));
-						set_notes((String) table.getValueAt(row, 4));
-						set_other((String) table.getValueAt(row, 5));
-						set_date((String) table.getValueAt(row, 6));
+						set_products((String) table.getValueAt(row, 3));
+						set_formula((String) table.getValueAt(row, 4));
+						set_notes((String) table.getValueAt(row, 5));
+						set_other((String) table.getValueAt(row, 6));
+						set_date((String) table.getValueAt(row, 7));
 
 						try {
 							Home_Page.go_to_visit_description = new Visit_Description();
@@ -188,12 +190,13 @@ public class Client_History extends JFrame {
 					}
 				}
 			});
-
 			statement_draw_table = ConnectionHandler.connection.createStatement();
 			ResultSet rs = statement_draw_table.executeQuery(
-					"SELECT Hairstyle, Haircut, Products, Formula, Notes, Other, Date FROM history WHERE id = "
+					"SELECT Stylist, Hairstyle, Haircut, Products, Formula, Notes, Other, Date FROM history WHERE id = "
 							+ View_List_Of_Clients.get_id() + " ORDER BY Date");
+
 			while (rs.next()) {
+				String stylist = rs.getString("Stylist");
 				String hairstyle = rs.getString("Hairstyle");
 				String haircut = rs.getString("Haircut");
 				String products = rs.getString("Products");
@@ -201,7 +204,9 @@ public class Client_History extends JFrame {
 				String notes = rs.getString("Notes");
 				String other = rs.getString("Other");
 				String date = rs.getString("Date");
-				model.addRow(new Object[] { hairstyle, haircut, products, formula, notes, other, date });
+				System.out.println("4");
+
+				model.addRow(new Object[] { stylist, hairstyle, haircut, products, formula, notes, other, date });
 			}
 
 			table.setModel(model);

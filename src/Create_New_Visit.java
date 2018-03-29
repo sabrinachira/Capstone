@@ -98,7 +98,6 @@ public class Create_New_Visit extends JFrame {
 		stylist_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		stylist_prompt.setForeground(Color.white);
 		JTextField stylist_input = new JTextField(20);
-		stylist_input.setText(ConnectionHandler.select_info("clients", "Stylist"));
 		JLabel hairstyle_prompt = new JLabel("Hairstyle: ");
 		hairstyle_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		hairstyle_prompt.setForeground(Color.white);
@@ -180,19 +179,20 @@ public class Create_New_Visit extends JFrame {
 
 				if (confirm == JOptionPane.YES_OPTION) {
 					try {
+						String stylist = stylist_input.getText().toUpperCase();
 						String hairstyle = hairstyle_input.getText().toUpperCase();
 						String haircut = haircut_input.getText().toUpperCase();
 						String products_purchased = products_purchased_input.getText().toUpperCase();
 						String formula = formula_input.getText().toUpperCase();
 						String notes_and_preferences = notes_and_preferences_input.getText().toUpperCase();
 						String other = other_input.getText().toUpperCase();
-
+						
 						Date date = new Date();
 						simple_date = new SimpleDateFormat("MM-dd-yyyy | hh:mm:ss a");
 						String visit_date = simple_date.format(date);
 						// verify that there isn't a person with that name
 						// already and address already
-						ConnectionHandler.add_visit_to_client_table(hairstyle, haircut, products_purchased, formula,
+						ConnectionHandler.add_visit_to_history_table(stylist, hairstyle, haircut, products_purchased, formula,
 								notes_and_preferences, other, visit_date);
 
 						Home_Page.client_history_frame = new Client_History();
