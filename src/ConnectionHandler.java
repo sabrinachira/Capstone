@@ -115,7 +115,25 @@ public class ConnectionHandler {
 			System.out.println("couldn't add client profile");
 			System.err.println(e.getMessage());
 		}
+	}
 
+	/*
+	 * creates the visit history of a client
+	 */
+	public static void update_clients_profile(String first_name, String last_name, String phone_number, String address,
+			String email) throws ClassNotFoundException {
+		try {
+			statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			int client_id = View_List_Of_Clients.get_id();
+			String query = "UPDATE clients SET First = '" + first_name + "', Last = '" + last_name + "', Phone = '"
+					+ phone_number + "', Address = '" + address + "', Email = '" + email + "' WHERE id = " + client_id;
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println("couldn't update profile");
+
+			System.err.println(e.getMessage());
+		}
 	}
 
 	/*

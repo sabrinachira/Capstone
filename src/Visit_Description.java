@@ -33,12 +33,15 @@ public class Visit_Description extends JFrame {
 			e.printStackTrace();
 		}
 
-		setTitle("Hair with a Flair. Your Client-Based Management System.");
+		setTitle("Hair with a Flair. Your Client-Based Management System | History Description");
 		JMenuBar menu_bar = new JMenuBar();
 		JMenu Options = new JMenu("Options");
+		Options.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
 		table = new JTable();
 
 		JMenuItem view_client_list = new JMenuItem("View List of Clients");
+		view_client_list.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 		menu_bar.add(Options);
 

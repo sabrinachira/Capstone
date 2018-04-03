@@ -22,9 +22,10 @@ public class Home_Page extends JFrame {
 	static JFrame go_to_new_client_visit;
 	static JFrame client_history_frame;
 	static JFrame go_to_visit_description;
+	static JFrame update_profile;
 
 	public Home_Page() {
-		setTitle("Hair with a Flair. Your Client-Based Management System.");
+		setTitle("Hair with a Flair. Your Client-Based Management System | Home Page");
 		JPanel panel_home_page = new JPanel();
 
 		JButton create_a_new_client_profile = new JButton("Create a New Client Profile");
@@ -72,10 +73,10 @@ public class Home_Page extends JFrame {
 			}
 		});
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) screenSize.getHeight() - 100;
-		int width = (int) screenSize.getWidth() - 100;
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
 		pack();
-		setSize(width - 900, height - 200);
+		setSize(width, height - 50);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

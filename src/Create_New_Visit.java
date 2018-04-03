@@ -27,72 +27,13 @@ public class Create_New_Visit extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setTitle("Hair with a Flair. Your Client-Based Management System.");
-		Box vertical_box = Box.createVerticalBox();
+		setTitle("Hair with a Flair. Your Client-Based Management System | New Visit");
 		Box vertical_box2 = Box.createVerticalBox();
 		Box buttons_vertical_box = Box.createVerticalBox();
 		Box vertical_box_horizontal = Box.createHorizontalBox();
 
-		// from New_Client_Profile
-		Box first_horizontal_box = Box.createHorizontalBox();
-		Box last_horizontal_box = Box.createHorizontalBox();
-		Box phone_horizontal_box = Box.createHorizontalBox();
-		Box address_horizontal_box = Box.createHorizontalBox();
-		Box email_horizontal_box = Box.createHorizontalBox();
-
 		Font font = new Font("Bookman Old Style", Font.PLAIN, 20);
 
-		JLabel first_name_prompt = new JLabel("First Name: ");
-		first_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-		first_name_prompt.setForeground(Color.white);
-		JTextField first_name_input = new JTextField(20);
-		first_name_input.setFont(font);
-		first_name_input.setText(View_List_Of_Clients.get_first_name());
-		JLabel last_name_prompt = new JLabel("Last Name: ");
-		last_name_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-		last_name_prompt.setForeground(Color.white);
-		JTextField last_name_input = new JTextField(20);
-		last_name_input.setFont(font);
-		last_name_input.setText(View_List_Of_Clients.get_last_name());
-		JLabel phone_number_prompt = new JLabel("Phone Number: ");
-		phone_number_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-		phone_number_prompt.setForeground(Color.white);
-		JTextField phone_number_input = new JTextField(20);
-		phone_number_input.setFont(font);
-		phone_number_input.setText(ConnectionHandler.select_info("clients", "Phone"));
-		JLabel address_prompt = new JLabel("Address: ");
-		address_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-		address_prompt.setForeground(Color.white);
-		JTextField address_input = new JTextField(20);
-		address_input.setFont(font);
-		address_input.setText(ConnectionHandler.select_info("clients", "Address"));
-		JLabel email_prompt = new JLabel("Email: ");
-		email_prompt.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-		email_prompt.setForeground(Color.white);
-		JTextField email_input = new JTextField(20);
-		email_input.setFont(font);
-		email_input.setText(ConnectionHandler.select_info("clients", "Email"));
-
-		first_horizontal_box.add(first_name_prompt);
-		first_horizontal_box.add(first_name_input);
-		last_horizontal_box.add(last_name_prompt);
-		last_horizontal_box.add(last_name_input);
-		phone_horizontal_box.add(phone_number_prompt);
-		phone_horizontal_box.add(phone_number_input);
-		address_horizontal_box.add(address_prompt);
-		address_horizontal_box.add(address_input);
-		email_horizontal_box.add(email_prompt);
-		email_horizontal_box.add(email_input);
-
-		vertical_box.add(first_horizontal_box);
-		vertical_box.add(Box.createVerticalStrut(20));
-		vertical_box.add(last_horizontal_box);
-		vertical_box.add(Box.createVerticalStrut(20));
-		vertical_box.add(phone_horizontal_box);
-		vertical_box.add(Box.createVerticalStrut(20));
-		vertical_box.add(address_horizontal_box);
-		vertical_box.add(Box.createVerticalStrut(20));
-		vertical_box.add(email_horizontal_box);
 		// for new visit
 		Box stylist_horizontal_box = Box.createHorizontalBox();
 		Box hairstyle_horizontal_box = Box.createHorizontalBox();
@@ -141,7 +82,9 @@ public class Create_New_Visit extends JFrame {
 		JTextField other_input = new JTextField(20);
 		other_input.setFont(font);
 		JButton save_profile = new JButton("SAVE");
+		save_profile.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		JButton cancel = new JButton("CANCEL");
+		cancel.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 		stylist_horizontal_box.add(stylist_prompt);
 		stylist_horizontal_box.add(stylist_input);
@@ -178,8 +121,6 @@ public class Create_New_Visit extends JFrame {
 		vertical_box2.add(Box.createVerticalStrut(20));
 		vertical_box2.add(other_horizontal_box);
 
-		vertical_box_horizontal.add(vertical_box);
-		vertical_box_horizontal.add(Box.createHorizontalStrut(20));
 		vertical_box_horizontal.add(vertical_box2);
 
 		Box final_vertical = Box.createVerticalBox();
@@ -200,9 +141,9 @@ public class Create_New_Visit extends JFrame {
 		save_profile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int confirm = JOptionPane.showConfirmDialog(null,
-						"Are you sure you want to save the creation of a new client visit?", "Save?",
-						JOptionPane.YES_NO_OPTION);
+				JLabel label = new JLabel("Are you sure you want to save the creation of a new client visit?");
+				label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+				int confirm = JOptionPane.showConfirmDialog(null, label, "Save?", JOptionPane.YES_NO_OPTION);
 
 				if (confirm == JOptionPane.YES_OPTION) {
 					try {
@@ -215,7 +156,7 @@ public class Create_New_Visit extends JFrame {
 						String other = other_input.getText().toUpperCase();
 
 						Date date = new Date();
-						simple_date = new SimpleDateFormat("MM-dd-yyyy | hh:mm:ss a");
+						simple_date = new SimpleDateFormat("MM-dd-yy | hh:mm:ss a");
 						String visit_date = simple_date.format(date);
 						// verify that there isn't a person with that name
 						// already and address already
@@ -242,9 +183,9 @@ public class Create_New_Visit extends JFrame {
 		cancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int confirm = JOptionPane.showConfirmDialog(null,
-						"Are you sure you want to cancel the creation of a new client visit?", "Cancel?",
-						JOptionPane.YES_NO_OPTION);
+				JLabel label = new JLabel("Are you sure you want to cancel the creation of a new client visit?");
+				label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+				int confirm = JOptionPane.showConfirmDialog(null, label, "Cancel?", JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
 					Home_Page.go_to_new_client_visit.dispose();
 					Home_Page.go_to_view_list_of_clients.setVisible(true);

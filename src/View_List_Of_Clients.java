@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,13 +42,18 @@ public class View_List_Of_Clients extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setTitle("Hair with a Flair. Your Client-Based Management System.");
+		setTitle("Hair with a Flair. Your Client-Based Management System | Client List");
 		JMenuBar menu_bar = new JMenuBar();
 		JMenu Options = new JMenu("Options");
+		Options.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
 		table = new JTable();
 
 		JMenuItem delete_whole_table = new JMenuItem("Delete Whole Table");
+		delete_whole_table.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
 		JMenuItem add_new_client = new JMenuItem("Add New Client Profile");
+		add_new_client.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 		menu_bar.add(Options);
 
@@ -66,12 +72,16 @@ public class View_List_Of_Clients extends JFrame {
 		delete_whole_table.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int confirm = JOptionPane.showConfirmDialog(null,
-						"Are you sure you want to delete the WHOLE client database?",
-						"Delete the WHOLE client database?", JOptionPane.YES_NO_OPTION);
+				JLabel delete_label = new JLabel("Are you sure you want to delete the WHOLE client database?");
+				delete_label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+				JLabel sure = new JLabel("Are you sure?");
+				sure.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
+				int confirm = JOptionPane.showConfirmDialog(null, delete_label, "Delete the WHOLE client database?",
+						JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
-					int confirm2 = JOptionPane.showConfirmDialog(null, "Are you sure?",
-							"Delete the WHOLE client database?", JOptionPane.YES_NO_OPTION);
+					int confirm2 = JOptionPane.showConfirmDialog(null, sure, "Delete the WHOLE client database?",
+							JOptionPane.YES_NO_OPTION);
 					if (confirm2 == JOptionPane.YES_OPTION) {
 						try {
 							ConnectionHandler.delete_whole_table();
@@ -101,19 +111,20 @@ public class View_List_Of_Clients extends JFrame {
 				Home_Page.go_to_new_client_profile.setVisible(true);
 			}
 		});
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) screenSize.getHeight() - 100;
-		int width = (int) screenSize.getWidth() - 100;
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
 
 		table.setRowHeight(30);
 		JScrollPane scroll_pane = new JScrollPane(table);
-		scroll_pane.setPreferredSize(new Dimension(width - 1100, height - 300));
+		scroll_pane.setPreferredSize(new Dimension(width, height - 50));
 		add(list_of_clients);
 		list_of_clients.setBackground(Color.decode("#660033"));
-		list_of_clients.add(scroll_pane, BorderLayout.CENTER);
+		add(scroll_pane, BorderLayout.CENTER);
 
 		pack();
-		setSize(width - 1000, height - 200);
+		setSize(width, height - 50);
 
 		// setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -122,8 +133,10 @@ public class View_List_Of_Clients extends JFrame {
 	private void draw_Table() throws ClassNotFoundException {
 		Statement statement_draw_table = null;
 		try {
+			table.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
 			ConnectionHandler.create_table("clients");
-			model = new DefaultTableModel(new String[] { "ID", "Last Name", "First Name"}, 0) {
+			model = new DefaultTableModel(new String[] { "ID", "Last Name", "First Name" }, 0) {
 				public boolean isCellEditable(int rowIndex, int mColIndex) {
 					return false;
 				}
@@ -137,7 +150,9 @@ public class View_List_Of_Clients extends JFrame {
 
 			table.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() == 2) {
+					JPanel panel = new JPanel();
+
+					if (e.getClickCount() == 2) {						
 						int row = table.rowAtPoint(e.getPoint());
 						set_first_name(table.getValueAt(row, 2));
 						set_last_name(table.getValueAt(row, 1));
@@ -146,13 +161,13 @@ public class View_List_Of_Clients extends JFrame {
 							ConnectionHandler.create_history_table();
 						} catch (ClassNotFoundException e2) {
 						}
-						Object[] options = { "View Visit History", "Create a Visit" };
+						Object[] options = { "View Visit History", "Edit Profile", "Create a Visit" };
+						JLabel label = new JLabel(
+								"Select an option.");
+						label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
-						JPanel panel = new JPanel();
-
-						panel.add(new JLabel(
-								"Please selet if you would like to view the client's visit history or create a visit for this client."));
-						int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_OPTION,
+						panel.add(label);
+						int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.PLAIN_MESSAGE, null, options, null);
 						// view history
 						if (result == JOptionPane.YES_OPTION) {
@@ -160,8 +175,19 @@ public class View_List_Of_Clients extends JFrame {
 							Home_Page.client_history_frame.setVisible(true);
 							Home_Page.go_to_view_list_of_clients.setVisible(false);
 						}
+						//update profile
+						else if(result == JOptionPane.NO_OPTION){
+							try {
+								Home_Page.update_profile = new Update_Profile();
+							} catch (ClassNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							Home_Page.update_profile.setVisible(true);
+							Home_Page.go_to_view_list_of_clients.setVisible(false);
+						}
 						// create new visitF
-						else if (result == JOptionPane.NO_OPTION) {
+						else if (result == JOptionPane.CANCEL_OPTION) {
 							try {
 								Home_Page.go_to_new_client_visit = new Create_New_Visit();
 								Home_Page.go_to_new_client_visit.setVisible(true);
@@ -185,7 +211,7 @@ public class View_List_Of_Clients extends JFrame {
 				int id = rs.getInt("ID");
 				String last_name = rs.getString("Last");
 				String first_name = rs.getString("First");
-				model.addRow(new Object[] { id, last_name, first_name});
+				model.addRow(new Object[] { id, last_name, first_name });
 			}
 
 			table.setModel(model);

@@ -46,14 +46,16 @@ public class Client_History extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		setTitle("Hair with a Flair. Your Client-Based Management System.");
+		setTitle("Hair with a Flair. Your Client-Based Management System | Client History");
 		JMenuBar menu_bar = new JMenuBar();
 		JMenu Options = new JMenu("Options");
+		Options.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		table = new JTable();
 
 		JMenuItem add_new_client_visit = new JMenuItem("Add New Client Visit");
+		add_new_client_visit.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 		JMenuItem view_client_list = new JMenuItem("View List of Clients");
+		view_client_list.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 		menu_bar.add(Options);
 
@@ -104,7 +106,13 @@ public class Client_History extends JFrame {
 		info_box.add(address_info);
 		info_box.add(email_info);
 
-		list_of_visits.add(info_box);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
+
+		//list_of_visits.add(info_box);
+		add(info_box);
+
 		try {
 			draw_Table();
 		} catch (ClassNotFoundException e2) {
@@ -132,19 +140,15 @@ public class Client_History extends JFrame {
 			}
 		});
 
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) screenSize.getHeight() - 100;
-		int width = (int) screenSize.getWidth() - 100;
-
 		table.setRowHeight(30);
 		JScrollPane scroll_pane = new JScrollPane(table);
-		scroll_pane.setPreferredSize(new Dimension(width - 500, height - 400));
+		scroll_pane.setPreferredSize(new Dimension(width, height-50));
 
 		add(list_of_visits);
 		list_of_visits.setBackground(Color.decode("#660033"));
-		list_of_visits.add(scroll_pane, BorderLayout.CENTER);
+		add(scroll_pane, BorderLayout.CENTER);
 		pack();
-		setSize(width, height - 100);
+		setSize(width, height-50);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 
@@ -153,6 +157,8 @@ public class Client_History extends JFrame {
 	private void draw_Table() throws ClassNotFoundException {
 		Statement statement_draw_table = null;
 		try {
+			table.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
 			model = new DefaultTableModel(
 					new String[] { "Stylist", "Hairstyle", "Haircut", "Products", "Formula", "Notes", "Other", "Date" },
 					0) {
@@ -193,7 +199,7 @@ public class Client_History extends JFrame {
 			statement_draw_table = ConnectionHandler.connection.createStatement();
 			ResultSet rs = statement_draw_table.executeQuery(
 					"SELECT Stylist, Hairstyle, Haircut, Products, Formula, Notes, Other, Date FROM history WHERE id = "
-							+ View_List_Of_Clients.get_id() + " ORDER BY Date");
+							+ View_List_Of_Clients.get_id() + " ORDER BY Date ASC");
 
 			while (rs.next()) {
 				String stylist = rs.getString("Stylist");
