@@ -136,6 +136,7 @@ public class ConnectionHandler {
 		}
 	}
 
+	
 	/*
 	 * Select a certain piece of info from certain table
 	 */
@@ -173,8 +174,8 @@ public class ConnectionHandler {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 
-			boolean clients_dropped = statement.execute("DROP TABLE clients");
-			boolean history_dropped = statement.execute("DROP TABLE history");
+			boolean clients_dropped = statement.execute("DROP TABLE IF EXISTS clients");
+			boolean history_dropped = statement.execute("DROP TABLE IF EXISTS history");
 
 		} catch (SQLException e) {
 			System.out.println("couldn't delete list");

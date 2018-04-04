@@ -53,6 +53,7 @@ public class Visit_Description extends JFrame {
 		view_client_list.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
 				Home_Page.go_to_view_list_of_clients.setVisible(true);
 				Home_Page.client_history_frame.dispose();
 			}
@@ -110,14 +111,15 @@ public class Visit_Description extends JFrame {
 		description.add(vertical_box, gbc);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) screenSize.getHeight() - 100;
-		int width = (int) screenSize.getWidth() - 100;
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
 
 		add(description);
 		description.setBackground(Color.decode("#660033"));
 		getContentPane().setBackground(Color.decode("#660033"));
 		pack();
-		setSize(width - 800, height - 300);
+		setResizable(false);
+		setSize(width, height - 80);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

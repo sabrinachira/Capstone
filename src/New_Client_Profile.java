@@ -129,6 +129,7 @@ public class New_Client_Profile extends JFrame {
 							ConnectionHandler.add_client_profile_to_database(first_name, last_name, phone_number,
 									address, email);
 
+							Home_Page.go_to_view_list_of_clients.dispose();
 							Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
 							Home_Page.go_to_view_list_of_clients.setVisible(true);
 							Home_Page.go_to_new_client_profile.dispose();
@@ -156,14 +157,15 @@ public class New_Client_Profile extends JFrame {
 			}
 		});
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) screenSize.getHeight() - 100;
-		int width = (int) screenSize.getWidth() - 100;
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
 
 		add(panel_new_client_profile);
 		panel_new_client_profile.setBackground(Color.decode("#660033"));
 		getContentPane().setBackground(Color.decode("#660033"));
 		pack();
-		setSize(width - 1000, height - 200);
+		setResizable(false);
+		setSize(width, height - 80);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

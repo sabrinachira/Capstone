@@ -195,14 +195,15 @@ public class Create_New_Visit extends JFrame {
 		});
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) screenSize.getHeight() - 100;
-		int width = (int) screenSize.getWidth() - 100;
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
 
 		add(panel_new_visit);
 		panel_new_visit.setBackground(Color.decode("#660033"));
 		getContentPane().setBackground(Color.decode("#660033"));
 		pack();
-		setSize(width - 600, height - 300);
+		setResizable(false);
+		setSize(width, height - 80);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

@@ -153,6 +153,8 @@ public class Update_Profile extends JFrame {
 				label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 				int confirm = JOptionPane.showConfirmDialog(null, label, "Cancel?", JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
+					Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
+					Home_Page.go_to_view_list_of_clients.setVisible(true);
 					Home_Page.go_to_new_client_profile.dispose();
 				} else {
 				}
@@ -160,14 +162,15 @@ public class Update_Profile extends JFrame {
 		});
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) screenSize.getHeight() - 100;
-		int width = (int) screenSize.getWidth() - 100;
+		int height = (int) screenSize.getHeight();
+		int width = (int) screenSize.getWidth();
 
 		add(panel_update_client_profile);
 		panel_update_client_profile.setBackground(Color.decode("#660033"));
 		getContentPane().setBackground(Color.decode("#660033"));
 		pack();
-		setSize(width - 1000, height - 200);
+		setResizable(false);
+		setSize(width, height - 80);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

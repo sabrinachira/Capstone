@@ -76,7 +76,9 @@ public class Home_Page extends JFrame {
 		int height = (int) screenSize.getHeight();
 		int width = (int) screenSize.getWidth();
 		pack();
-		setSize(width, height - 50);
+		setResizable(false);
+		setSize(width, height - 80);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}

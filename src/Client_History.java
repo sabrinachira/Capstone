@@ -84,6 +84,7 @@ public class Client_History extends JFrame {
 				email = rs.getString("Email");
 			}
 		} catch (SQLException e3) {
+			System.out.println("e3:");
 			e3.printStackTrace();
 		}
 
@@ -110,8 +111,7 @@ public class Client_History extends JFrame {
 		int height = (int) screenSize.getHeight();
 		int width = (int) screenSize.getWidth();
 
-		//list_of_visits.add(info_box);
-		add(info_box);
+		list_of_visits.add(info_box);
 
 		try {
 			draw_Table();
@@ -135,6 +135,7 @@ public class Client_History extends JFrame {
 		view_client_list.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
 				Home_Page.go_to_view_list_of_clients.setVisible(true);
 				Home_Page.client_history_frame.dispose();
 			}
@@ -142,13 +143,14 @@ public class Client_History extends JFrame {
 
 		table.setRowHeight(30);
 		JScrollPane scroll_pane = new JScrollPane(table);
-		scroll_pane.setPreferredSize(new Dimension(width, height-50));
+		scroll_pane.setPreferredSize(new Dimension(width - 20, height - 400));
 
 		add(list_of_visits);
 		list_of_visits.setBackground(Color.decode("#660033"));
-		add(scroll_pane, BorderLayout.CENTER);
+		list_of_visits.add(scroll_pane, BorderLayout.CENTER);
 		pack();
-		setSize(width, height-50);
+		setResizable(false);
+		setSize(width, height - 80);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 
@@ -199,7 +201,7 @@ public class Client_History extends JFrame {
 			statement_draw_table = ConnectionHandler.connection.createStatement();
 			ResultSet rs = statement_draw_table.executeQuery(
 					"SELECT Stylist, Hairstyle, Haircut, Products, Formula, Notes, Other, Date FROM history WHERE id = "
-							+ View_List_Of_Clients.get_id() + " ORDER BY Date ASC");
+							+ View_List_Of_Clients.get_id() + " ORDER BY Date DESC");
 
 			while (rs.next()) {
 				String stylist = rs.getString("Stylist");

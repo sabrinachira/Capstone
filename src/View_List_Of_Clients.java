@@ -112,19 +112,80 @@ public class View_List_Of_Clients extends JFrame {
 			}
 		});
 
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				System.exit(0);
+			}
+		});
+
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				JPanel panel = new JPanel();
+
+				if (e.getClickCount() == 2) {
+					int row = table.rowAtPoint(e.getPoint());
+					set_first_name(table.getValueAt(row, 2));
+					set_last_name(table.getValueAt(row, 1));
+					set_id(table.getValueAt(row, 0));
+
+					Object[] options = { "View Visit History", "Edit Profile", "Create a Visit" };
+					JLabel label = new JLabel("Select an option.");
+					label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
+					panel.add(label);
+					int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, options, null);
+					// view history
+					if (result == JOptionPane.YES_OPTION) {
+						Home_Page.client_history_frame = new Client_History();
+						Home_Page.client_history_frame.setVisible(true);
+						Home_Page.go_to_view_list_of_clients.dispose();
+					}
+					// update profile
+					else if (result == JOptionPane.NO_OPTION) {
+						try {
+							Home_Page.update_profile = new Update_Profile();
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+						Home_Page.update_profile.setVisible(true);
+						Home_Page.go_to_view_list_of_clients.dispose();
+					}
+					// create new visitF
+					else if (result == JOptionPane.CANCEL_OPTION) {
+						try {
+							Home_Page.go_to_new_client_visit = new Create_New_Visit();
+							Home_Page.go_to_new_client_visit.setVisible(true);
+							Home_Page.go_to_view_list_of_clients.dispose();
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+					} else {
+
+					}
+
+				}
+			}
+		});
+		// try {
+		// draw_Table();
+		// } catch (ClassNotFoundException e2) {
+		// e2.printStackTrace();
+		// }
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int height = (int) screenSize.getHeight();
 		int width = (int) screenSize.getWidth();
-
 		table.setRowHeight(30);
 		JScrollPane scroll_pane = new JScrollPane(table);
-		scroll_pane.setPreferredSize(new Dimension(width, height - 50));
+		scroll_pane.setPreferredSize(new Dimension(width - 50, height - 80));
 		add(list_of_clients);
 		list_of_clients.setBackground(Color.decode("#660033"));
-		add(scroll_pane, BorderLayout.CENTER);
+		list_of_clients.add(scroll_pane, BorderLayout.CENTER);
 
 		pack();
-		setSize(width, height - 50);
+		setResizable(false);
+		setSize(width, height - 80);
 
 		// setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -132,86 +193,34 @@ public class View_List_Of_Clients extends JFrame {
 
 	private void draw_Table() throws ClassNotFoundException {
 		Statement statement_draw_table = null;
+		Statement new_statement = null;
 		try {
 			table.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-
+			ConnectionHandler.create_history_table();
 			ConnectionHandler.create_table("clients");
-			model = new DefaultTableModel(new String[] { "ID", "Last Name", "First Name" }, 0) {
+			model = new DefaultTableModel(new String[] { "ID", "Last Name", "First Name", "Most Recent Visit" }, 0) {
 				public boolean isCellEditable(int rowIndex, int mColIndex) {
 					return false;
 				}
 			};
 
-			addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent we) {
-					System.exit(0);
-				}
-			});
-
-			table.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					JPanel panel = new JPanel();
-
-					if (e.getClickCount() == 2) {						
-						int row = table.rowAtPoint(e.getPoint());
-						set_first_name(table.getValueAt(row, 2));
-						set_last_name(table.getValueAt(row, 1));
-						set_id(table.getValueAt(row, 0));
-						try {
-							ConnectionHandler.create_history_table();
-						} catch (ClassNotFoundException e2) {
-						}
-						Object[] options = { "View Visit History", "Edit Profile", "Create a Visit" };
-						JLabel label = new JLabel(
-								"Select an option.");
-						label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-
-						panel.add(label);
-						int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_CANCEL_OPTION,
-								JOptionPane.PLAIN_MESSAGE, null, options, null);
-						// view history
-						if (result == JOptionPane.YES_OPTION) {
-							Home_Page.client_history_frame = new Client_History();
-							Home_Page.client_history_frame.setVisible(true);
-							Home_Page.go_to_view_list_of_clients.setVisible(false);
-						}
-						//update profile
-						else if(result == JOptionPane.NO_OPTION){
-							try {
-								Home_Page.update_profile = new Update_Profile();
-							} catch (ClassNotFoundException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-							Home_Page.update_profile.setVisible(true);
-							Home_Page.go_to_view_list_of_clients.setVisible(false);
-						}
-						// create new visitF
-						else if (result == JOptionPane.CANCEL_OPTION) {
-							try {
-								Home_Page.go_to_new_client_visit = new Create_New_Visit();
-								Home_Page.go_to_new_client_visit.setVisible(true);
-								Home_Page.go_to_view_list_of_clients.setVisible(false);
-							} catch (ClassNotFoundException e1) {
-								e1.printStackTrace();
-							}
-						} else {
-
-						}
-
-					}
-				}
-			});
-
 			statement_draw_table = ConnectionHandler.connection.createStatement();
+			new_statement = ConnectionHandler.connection.createStatement();
 			ResultSet rs = statement_draw_table
 					.executeQuery("SELECT id, Last, First FROM clients ORDER BY Last, First, id;");
 
 			while (rs.next()) {
+				String date = "";
 				int id = rs.getInt("ID");
 				String last_name = rs.getString("Last");
 				String first_name = rs.getString("First");
-				model.addRow(new Object[] { id, last_name, first_name });
+				String query = "SELECT Date FROM history WHERE id = " + id + " ORDER BY Date DESC LIMIT 1";
+				ResultSet rs2 = new_statement.executeQuery(query);
+				while (rs2.next()) {
+					date = rs2.getString("Date");
+				}
+				model.addRow(new Object[] { id, last_name, first_name, date });
+				date = "";
 			}
 
 			table.setModel(model);
