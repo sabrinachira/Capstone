@@ -24,7 +24,7 @@ public class ConnectionHandler {
 		try {
 			// create a database connection
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:sample.db"); //"jdbc:sqlite:C:/Users/sabri/Desktop/workspace/Capstone/sample.db");
+			connection = DriverManager.getConnection("jdbc:sqlite:sample.db"); // "jdbc:sqlite:C:/Users/sabri/Desktop/workspace/Capstone/sample.db");
 
 		} catch (SQLException e) {
 			System.out.println("didn't connect");
@@ -136,7 +136,6 @@ public class ConnectionHandler {
 		}
 	}
 
-	
 	/*
 	 * Select a certain piece of info from certain table
 	 */
@@ -174,11 +173,30 @@ public class ConnectionHandler {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 
-			boolean clients_dropped = statement.execute("DROP TABLE IF EXISTS clients");
-			boolean history_dropped = statement.execute("DROP TABLE IF EXISTS history");
+			statement.execute("DROP TABLE IF EXISTS clients");
+			statement.execute("DROP TABLE IF EXISTS history");
 
 		} catch (SQLException e) {
 			System.out.println("couldn't delete list");
+			System.err.println(e.getMessage());
+		}
+	}
+
+	/*
+	 * deletes the whole table of clients
+	 * https://www.tutorialspoint.com/sqlite/sqlite_delete_query.htm
+	 */
+	public static void delete_client() throws ClassNotFoundException {
+		try {
+			statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			int client_id = View_List_Of_Clients.get_id();
+			statement.execute("DELETE FROM clients WHERE id = " + client_id);
+			statement.execute("DELETE FROM history WHERE id = " + client_id);
+
+
+		} catch (SQLException e) {
+			System.out.println("couldn't delete client");
 			System.err.println(e.getMessage());
 		}
 	}

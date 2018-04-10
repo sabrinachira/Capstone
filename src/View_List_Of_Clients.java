@@ -180,21 +180,21 @@ public class View_List_Of_Clients extends JFrame {
 					set_last_name(table.getValueAt(row, 1));
 					set_id(table.getValueAt(row, 0));
 
-					Object[] options = { "View Visit History", "Edit Profile", "Create a Visit" };
+					Object[] options = { "View Visit History", "Edit Profile", "Create a Visit", "Delete Client" };
 					JLabel label = new JLabel("Select an option.");
 					label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 					panel.add(label);
-					int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.PLAIN_MESSAGE, null, options, null);
+					int result = JOptionPane.showOptionDialog(null, panel, "Client", JOptionPane.DEFAULT_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					// view history
-					if (result == JOptionPane.YES_OPTION) {
+					if (result == 0) {
 						Home_Page.client_history_frame = new Client_History();
 						Home_Page.client_history_frame.setVisible(true);
 						Home_Page.go_to_view_list_of_clients.dispose();
 					}
 					// update profile
-					else if (result == JOptionPane.NO_OPTION) {
+					else if (result == 1) {
 						try {
 							Home_Page.update_profile = new Update_Profile();
 						} catch (ClassNotFoundException e1) {
@@ -204,13 +204,43 @@ public class View_List_Of_Clients extends JFrame {
 						Home_Page.go_to_view_list_of_clients.dispose();
 					}
 					// create new visitF
-					else if (result == JOptionPane.CANCEL_OPTION) {
+					else if (result == 2) {
 						try {
 							Home_Page.go_to_new_client_visit = new Create_New_Visit();
 							Home_Page.go_to_new_client_visit.setVisible(true);
 							Home_Page.go_to_view_list_of_clients.dispose();
 						} catch (ClassNotFoundException e1) {
 							e1.printStackTrace();
+						}
+					} else if (result == 3) {
+						JLabel delete_label = new JLabel(
+								"Delete this client and their visit history? This cannot be undone.");
+						delete_label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+						JLabel sure = new JLabel("Are you sure?");
+						sure.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
+						int confirm = JOptionPane.showConfirmDialog(null, delete_label, "Delete this client?",
+								JOptionPane.YES_NO_OPTION);
+						if (confirm == JOptionPane.YES_OPTION) {
+							int confirm2 = JOptionPane.showConfirmDialog(null, sure, "Delete this client?",
+									JOptionPane.YES_NO_OPTION);
+							if (confirm2 == JOptionPane.YES_OPTION) {
+								try {
+									ConnectionHandler.delete_client();
+									draw_Table();
+								} catch (ClassNotFoundException e1) {
+									e1.printStackTrace();
+								}
+								try {
+									draw_Table();
+								} catch (ClassNotFoundException e1) {
+									e1.printStackTrace();
+								}
+							} else {
+							}
+						} else if (confirm == JOptionPane.NO_OPTION) {
+						} else {
+
 						}
 					} else {
 

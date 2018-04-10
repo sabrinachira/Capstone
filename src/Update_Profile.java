@@ -207,7 +207,7 @@ public class Update_Profile extends JFrame {
 				if (confirm == JOptionPane.YES_OPTION) {
 					Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
 					Home_Page.go_to_view_list_of_clients.setVisible(true);
-					Home_Page.go_to_new_client_profile.dispose();
+					Home_Page.update_profile.dispose();
 				} else {
 				}
 			}
