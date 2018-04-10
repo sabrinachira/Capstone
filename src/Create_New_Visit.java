@@ -47,7 +47,7 @@ public class Create_New_Visit extends JFrame {
 		help.add(new JSeparator());
 		help.add(new JSeparator());
 		help.add(about);
-		
+
 		setJMenuBar(menu_bar);
 
 		how_to.addActionListener(new ActionListener() {
@@ -202,6 +202,14 @@ public class Create_New_Visit extends JFrame {
 						String formula = formula_input.getText().toUpperCase();
 						String notes_and_preferences = notes_and_preferences_input.getText().toUpperCase();
 						String other = other_input.getText().toUpperCase();
+
+						stylist = stylist.replace("'", "`");
+						hairstyle = hairstyle.replace("'", "`");
+						haircut = haircut.replace("'", "`");
+						products_purchased = products_purchased.replace("'", "`");
+						formula = formula.replace("'", " ");
+						notes_and_preferences = notes_and_preferences.replace("'", "`");
+						other = other.replace("'", "`");
 
 						Date date = new Date();
 						simple_date = new SimpleDateFormat("MM-dd-yy | hh:mm:ss a");

@@ -44,9 +44,9 @@ public class Update_Profile extends JFrame {
 		help.add(new JSeparator());
 		help.add(new JSeparator());
 		help.add(about);
-		
+
 		setJMenuBar(menu_bar);
-		
+
 		how_to.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -72,7 +72,7 @@ public class Update_Profile extends JFrame {
 
 			}
 		});
-		
+
 		JPanel panel_update_client_profile = new JPanel();
 		Box vertical_box = Box.createVerticalBox();
 
@@ -171,6 +171,11 @@ public class Update_Profile extends JFrame {
 						String phone_number = phone_number_input.getText().toUpperCase();
 						String address = address_input.getText().toUpperCase();
 						String email = email_input.getText().toUpperCase();
+						first_name = first_name.replace("'", "`");
+						last_name = last_name.replace("'", "`");
+						phone_number = phone_number.replace("'", "`");
+						address = address.replace("'", "`");
+						email = email.replace("'", "`");
 						if (first_name.equals("") || last_name.equals("") || phone_number.equals("")
 								|| address.equals("") || email.equals("")) {
 							JOptionPane.showMessageDialog(null, empty, "Empty Field(s)", JOptionPane.PLAIN_MESSAGE);

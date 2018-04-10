@@ -119,6 +119,13 @@ public class New_Client_Profile extends JFrame {
 						String phone_number = phone_number_input.getText().toUpperCase();
 						String address = address_input.getText().toUpperCase();
 						String email = email_input.getText().toUpperCase();
+
+						first_name = first_name.replace("'", "`");
+						last_name = last_name.replace("'", "`");
+						phone_number = phone_number.replace("'", "`");
+						address = address.replace("'", "`");
+						email = email.replace("'", "`");
+
 						if (first_name.equals("") || last_name.equals("") || phone_number.equals("")
 								|| address.equals("") || email.equals("")) {
 							JOptionPane.showMessageDialog(null, empty, "Empty Field(s)", JOptionPane.PLAIN_MESSAGE);
@@ -129,7 +136,6 @@ public class New_Client_Profile extends JFrame {
 							ConnectionHandler.add_client_profile_to_database(first_name, last_name, phone_number,
 									address, email);
 
-							Home_Page.go_to_view_list_of_clients.dispose();
 							Home_Page.go_to_view_list_of_clients = new View_List_Of_Clients();
 							Home_Page.go_to_view_list_of_clients.setVisible(true);
 							Home_Page.go_to_new_client_profile.dispose();
@@ -147,9 +153,7 @@ public class New_Client_Profile extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JLabel label = new JLabel("Are you sure you want to cancel the creation of a new client profile?");
 				label.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
-				int confirm = JOptionPane.showConfirmDialog(null,
-						label, "Cancel?",
-						JOptionPane.YES_NO_OPTION);
+				int confirm = JOptionPane.showConfirmDialog(null, label, "Cancel?", JOptionPane.YES_NO_OPTION);
 				if (confirm == JOptionPane.YES_OPTION) {
 					Home_Page.go_to_new_client_profile.dispose();
 				} else {
