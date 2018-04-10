@@ -22,6 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -48,17 +49,34 @@ public class View_List_Of_Clients extends JFrame {
 		Options.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 		table = new JTable();
-
-		JMenuItem delete_whole_table = new JMenuItem("Delete Whole Table");
+		JMenu delete = new JMenu("Delete");
+		delete.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		JMenuItem delete_whole_table = new JMenuItem("Whole Table");
 		delete_whole_table.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		JMenu help = new JMenu("Help");
+		help.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 		JMenuItem add_new_client = new JMenuItem("Add New Client Profile");
 		add_new_client.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
-		menu_bar.add(Options);
+		JMenuItem how_to = new JMenuItem("'How To' Help");
+		how_to.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		JMenuItem about = new JMenuItem("About");
+		about.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
-		Options.add(delete_whole_table);
+		menu_bar.add(Options);
+		menu_bar.add(help);
 		Options.add(add_new_client);
+		Options.add(new JSeparator());
+		Options.add(new JSeparator());
+		Options.add(new JSeparator());
+		Options.add(delete);
+		delete.add(delete_whole_table);
+		help.add(how_to);
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(about);
 
 		setJMenuBar(menu_bar);
 		JPanel list_of_clients = new JPanel();
@@ -68,6 +86,40 @@ public class View_List_Of_Clients extends JFrame {
 		} catch (ClassNotFoundException e2) {
 			e2.printStackTrace();
 		}
+
+		how_to.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.how_to = new How_To();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.how_to.setVisible(true);
+
+			}
+		});
+
+		about.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.about = new About();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.about.setVisible(true);
+
+			}
+		});
+
+		add_new_client.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Home_Page.go_to_new_client_profile = new New_Client_Profile();
+				Home_Page.go_to_new_client_profile.setVisible(true);
+			}
+		});
 
 		delete_whole_table.addActionListener(new ActionListener() {
 			@Override

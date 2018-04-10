@@ -24,7 +24,7 @@ public class ConnectionHandler {
 		try {
 			// create a database connection
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/sabri/Desktop/workspace/Capstone/sample.db");
+			connection = DriverManager.getConnection("jdbc:sqlite:sample.db"); //"jdbc:sqlite:C:/Users/sabri/Desktop/workspace/Capstone/sample.db");
 
 		} catch (SQLException e) {
 			System.out.println("didn't connect");

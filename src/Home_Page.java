@@ -23,8 +23,12 @@ public class Home_Page extends JFrame {
 	static JFrame client_history_frame;
 	static JFrame go_to_visit_description;
 	static JFrame update_profile;
+	static JFrame how_to;
+	static JFrame about;
 
 	public Home_Page() {
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("logo.png"));
+		
 		setTitle("Hair with a Flair. Your Client-Based Management System | Home Page");
 		JPanel panel_home_page = new JPanel();
 

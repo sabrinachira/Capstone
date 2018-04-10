@@ -13,8 +13,12 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
@@ -27,7 +31,51 @@ public class Create_New_Visit extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		setTitle("Hair with a Flair. Your Client-Based Management System | New Visit");
+		JMenuBar menu_bar = new JMenuBar();
+		JMenuItem how_to = new JMenuItem("'How To' Help");
+		how_to.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		JMenuItem about = new JMenuItem("About");
+		about.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		JMenu help = new JMenu("Help");
+		help.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
+		menu_bar.add(help);
+		help.add(how_to);
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(about);
+		
+		setJMenuBar(menu_bar);
+
+		how_to.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.how_to = new How_To();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.how_to.setVisible(true);
+
+			}
+		});
+
+		about.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.about = new About();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.about.setVisible(true);
+
+			}
+		});
+
 		Box vertical_box2 = Box.createVerticalBox();
 		Box buttons_vertical_box = Box.createVerticalBox();
 		Box vertical_box_horizontal = Box.createHorizontalBox();

@@ -22,6 +22,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -46,6 +47,7 @@ public class Client_History extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		setTitle("Hair with a Flair. Your Client-Based Management System | Client History");
 		JMenuBar menu_bar = new JMenuBar();
 		JMenu Options = new JMenu("Options");
@@ -61,6 +63,48 @@ public class Client_History extends JFrame {
 
 		Options.add(add_new_client_visit);
 		Options.add(view_client_list);
+
+		JMenuItem how_to = new JMenuItem("'How To' Help");
+		how_to.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		JMenuItem about = new JMenuItem("About");
+		about.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+
+		JMenu help = new JMenu("Help");
+		help.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		
+		menu_bar.add(help);
+		help.add(how_to);
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(about);
+		setJMenuBar(menu_bar);
+
+		how_to.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.how_to = new How_To();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.how_to.setVisible(true);
+
+			}
+		});
+
+		about.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.about = new About();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.about.setVisible(true);
+
+			}
+		});
 
 		setJMenuBar(menu_bar);
 

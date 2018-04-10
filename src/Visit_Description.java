@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,6 +45,46 @@ public class Visit_Description extends JFrame {
 		view_client_list.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
 
 		menu_bar.add(Options);
+
+		JMenuItem how_to = new JMenuItem("'How To' Help");
+		how_to.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		JMenuItem about = new JMenuItem("About");
+		about.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		
+		JMenu help = new JMenu("Help");
+		help.setFont(new Font("Bookman Old Style", Font.PLAIN, 20));
+		menu_bar.add(help);
+		help.add(how_to);
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(new JSeparator());
+		help.add(about);
+		setJMenuBar(menu_bar);
+		how_to.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.how_to = new How_To();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.how_to.setVisible(true);
+
+			}
+		});
+
+		about.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Home_Page.about = new About();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				Home_Page.about.setVisible(true);
+
+			}
+		});
 
 		Options.add(view_client_list);
 
