@@ -26,10 +26,7 @@ public class Home_Page extends JFrame {
 	static JFrame go_to_view_list_of_clients;
 	static JFrame go_to_new_client_visit;
 	static JFrame client_history_frame;
-	static JFrame go_to_visit_description;
 	static JFrame update_profile;
-	static JFrame how_to;
-	static JFrame about;
 
 	public Home_Page() {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("logo.png"));

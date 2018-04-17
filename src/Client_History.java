@@ -225,12 +225,8 @@ public class Client_History extends JFrame {
 						set_other((String) table.getValueAt(row, 6));
 						set_date((String) table.getValueAt(row, 7));
 
-						try {
-							Home_Page.go_to_visit_description = new Visit_Description();
-							Home_Page.go_to_visit_description.setVisible(true);
-						} catch (ClassNotFoundException e1) {
-							e1.printStackTrace();
-						}
+							String description = "Date: " + get_date() + "\n" + "Stylist: " + get_stylist() + "\n" + "Hairstyle: " + get_hairstyle()  + "\n" + "Haircut: " + get_haircut() + "\n" + "Products: " + get_products() + "\n" + "Formula: " + get_formula() + "\n" + "Notes and Preferences: " + get_notes() + "\n" + "Other: " + get_other();
+							JOptionPane.showMessageDialog(null, description, "Description", JOptionPane.PLAIN_MESSAGE);
 
 					}
 				}
